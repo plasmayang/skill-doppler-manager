@@ -7,6 +7,7 @@ This document serves as a guide for both human operators and the AI agent for bo
 Determine the host operating system and execute the corresponding installation commands.
 
 ### Debian / Ubuntu
+
 ```bash
 # Update and install dependencies
 sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
@@ -20,11 +21,13 @@ sudo apt-get update && sudo apt-get install doppler
 ```
 
 ### macOS (Homebrew)
+
 ```bash
 brew install dopplerhq/cli/doppler
 ```
 
 ### Windows (Scoop)
+
 ```powershell
 scoop bucket add doppler https://github.com/DopplerHQ/scoop-doppler.git
 scoop install doppler
@@ -35,15 +38,20 @@ scoop install doppler
 Once installed, the CLI must be authenticated to access the cloud workspace.
 
 ### Option A: Interactive Developer Login (Recommended for Local Dev)
+
 For personal workstations and Codespaces, use the interactive web login.
+
 1. Run `doppler login` in the terminal.
 2. Follow the prompt to open the browser and authorize the device.
 3. Once authenticated, navigate to your project directory and run `doppler setup` to link the directory to a specific Doppler Project and Configuration.
 
 ### Option B: Service Token (For CI/CD or Headless Servers)
+
 For servers or automated environments where interactive login is impossible, use a Service Token.
+
 1. Generate a Service Token via the Doppler Web UI for the specific Project and Config.
 2. Configure the CLI using the token:
+
    ```bash
    doppler configure set token dp.st.xxxxxx
    ```

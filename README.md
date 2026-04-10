@@ -9,6 +9,7 @@
 This repository provides the official `skill-doppler-manager` for Gemini CLI and other AI agents. It acts as the "secure hand" for LLMs to manage and inject secrets, completely abolishing the traditional "fetch to local `.env`" workflow in favor of memory-only injection via **Doppler**.
 
 By installing this skill, your AI agents will learn to:
+
 1. 🛑 **Never leak, print, or commit raw secrets.**
 2. 💉 **Inject secrets directly into processes using `doppler run`.**
 3. 🔐 **Require Human-in-the-Loop (HITL) for secret creation and modification.**
@@ -40,6 +41,7 @@ gemini skills install ./skill-doppler-manager --scope workspace
 ## 🧠 Design Philosophy (Prompt vs. Code)
 
 We strictly separate concerns to optimize LLM context window usage:
+
 - **`SKILL.md` (Prompt):** Behavioral guardrails (Zero-Leak), workflow orchestration (HITL), and injection syntax.
 - **`scripts/` (Code):** Deterministic environment checks (e.g., `check_status.sh` returning boolean-like LLM-friendly strings).
 - **`references/` (Docs):** Human-centric setup guides and historical architectural decisions.
