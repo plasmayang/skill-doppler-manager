@@ -49,9 +49,8 @@ jobs:
   eval-prompt:
     name: LLM Prompt Evaluation (Promptfoo)
     runs-on: ubuntu-latest
-    # To run this in Github Actions, you need to add OPENAI_API_KEY to your repository secrets.
-    # We use continue-on-error here so the pipeline doesn't completely fail if the key is missing on forks.
-    continue-on-error: true
+    # Explicitly skip if secrets are unavailable to avoid red builds on forks
+    if: github.repository == 'plasmayang/skill-doppler-manager' || github.event_name == 'push'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -69,7 +68,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           if [ -z "$OPENAI_API_KEY" ]; then
-            echo "Skipping Promptfoo Eval because OPENAI_API_KEY is not set in secrets."
+            echo "Skipping Promptfoo Eval because OPENAI_API_KEY is not set in repository secrets."
             exit 0
           fi
           cd tests

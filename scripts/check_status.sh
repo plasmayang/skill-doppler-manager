@@ -1,17 +1,14 @@
 #!/bin/bash
 
-# Check if Doppler CLI is installed
+# Ensure Doppler CLI is installed
 if ! command -v doppler &> /dev/null; then
     echo "STATUS: ERROR - Doppler CLI is not installed."
     exit 1
 fi
 
 # Check configuration and authentication status
-# We capture stderr to /dev/null to keep output clean, relying on the exit code
-doppler configure &> /dev/null
-CONFIG_EXIT_CODE=$?
-
-if [[ $CONFIG_EXIT_CODE -ne 0 ]]; then
+# We capture stderr to /dev/null to keep output clean
+if ! doppler configure &> /dev/null; then
     echo "STATUS: ERROR - Doppler CLI is installed but not authenticated or configured."
     exit 1
 fi
@@ -25,5 +22,5 @@ if [[ -z "$PROJECT" ]] || [[ -z "$CONFIG" ]]; then
     exit 0
 fi
 
-echo "STATUS: OK - Authenticated (Project: $PROJECT, Config: $CONFIG)"
+echo "STATUS: OK - Authenticated (Project: ${PROJECT}, Config: ${CONFIG})"
 exit 0
