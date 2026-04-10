@@ -1,0 +1,10 @@
+# OS and environment
+.DS_Store
+.env
+.env.*
+node_modules/
+dist/
+
+# Gemini CLI / AI specific
+.gemini/
+*.skill
