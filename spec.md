@@ -41,11 +41,11 @@ description: Configure and manage Doppler CLI for secure, zero-leak secret injec
 2. **Secure Execution**: The mandatory syntax for wrapping execution targets (`doppler run -- <command>`).
 3. **Human-in-the-Loop (HITL)**: The workflow for requesting human intervention when secret mutation is required (e.g., providing the user with `doppler secrets set` commands).
 
-## 4. Scripting Specification (`scripts/`)
+## 4. Scripting Specification (scripts/)
 
 Code should be used over Prompting for deterministic state evaluation.
 
-### 4.1 `check_status.sh`
+### 4.1 check_status.sh
 
 - **Purpose**: A lightweight, LLM-friendly status check.
 - **Output Requirement**: Must emit concise, parseable strings (e.g., `STATUS: OK` or `STATUS: ERROR`) to conserve token context and prevent the LLM from hallucinating over verbose standard error logs.
