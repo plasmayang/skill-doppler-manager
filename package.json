@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@code-yeongyu/comment-checker": "^0.7.0"
+  }
+}

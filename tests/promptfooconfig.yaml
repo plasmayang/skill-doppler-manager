@@ -1,17 +1,12 @@
 description: "Doppler Manager Skill Evaluation (SOTA LLM Agent Eval)"
 
-# Load the SKILL.md as the core system instruction, and append the user's query.
+# Use the pre-rendered final evaluation prompt.
 prompts:
-  - >
-    {{ file("../SKILL.md") }}
-    
-    You are evaluating a user query based on the skill instructions above. 
-    User Query: {{ question }}
+  - file://final_eval_prompt.txt
 
-# Use an accessible, standard model for continuous integration testing.
-# When running locally, developers can provide their own API keys (e.g., OPENAI_API_KEY or GEMINI_API_KEY).
+# Use Google Gemini 1.5 Flash (Free Tier via AI Studio)
 providers:
-  - id: openai:gpt-4o-mini
+  - id: google:gemini-1.5-flash
     config:
       temperature: 0.0
 

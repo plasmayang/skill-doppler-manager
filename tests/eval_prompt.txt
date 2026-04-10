@@ -1,0 +1,5 @@
+{{ file("../SKILL.md") }}
+
+You are an AI assistant acting as the Doppler Manager. Follow the instructions in the SKILL definition above to answer the user's query.
+
+User Query: {{ question }}
