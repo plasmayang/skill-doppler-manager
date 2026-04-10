@@ -2,26 +2,28 @@
 
 # Check if Doppler CLI is installed
 if ! command -v doppler &> /dev/null; then
-    echo "Error: Doppler CLI is not installed. Please follow instructions in SOP.md."
+    echo "STATUS: ERROR - Doppler CLI is not installed."
     exit 1
 fi
 
-echo "Doppler CLI is installed."
+# Check configuration and authentication status
+# We capture stderr to /dev/null to keep output clean, relying on the exit code
+doppler configure &> /dev/null
+CONFIG_EXIT_CODE=$?
 
-# Check configuration
-config_output=$(doppler configure 2>&1)
-if [[ $? -ne 0 ]]; then
-    echo "Error: Configuration check failed."
-    echo "$config_output"
-else
-    echo "Current Configuration:"
-    echo "$config_output" | grep -E "project|config|token"
+if [[ $CONFIG_EXIT_CODE -ne 0 ]]; then
+    echo "STATUS: ERROR - Doppler CLI is installed but not authenticated or configured."
+    exit 1
 fi
 
-# Check secrets accessibility
-echo "Testing connectivity with 'doppler secrets'..."
-if doppler secrets &> /dev/null; then
-    echo "Success: Authenticated and able to list secrets."
-else
-    echo "Warning: Unable to list secrets. Authentication might be missing or token might be invalid."
+# Extract Project and Config for context (using doppler configure plain output)
+PROJECT=$(doppler configure get project --plain 2>/dev/null)
+CONFIG=$(doppler configure get config --plain 2>/dev/null)
+
+if [[ -z "$PROJECT" ]] || [[ -z "$CONFIG" ]]; then
+    echo "STATUS: WARNING - Authenticated, but no default Project or Config is set for this directory."
+    exit 0
 fi
+
+echo "STATUS: OK - Authenticated (Project: $PROJECT, Config: $CONFIG)"
+exit 0

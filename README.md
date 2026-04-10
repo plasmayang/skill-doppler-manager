@@ -1,4 +1,4 @@
-# 🛡️ Skill: Doppler Manager (Zero-Trust SecretOps)
+# Doppler Manager (SOTA Zero-Trust SecretOps)
 
 [![Gemini CLI Skill](https://img.shields.io/badge/Gemini%20CLI-Skill-blue.svg)](https://github.com/google/gemini-cli)
 [![Doppler](https://img.shields.io/badge/Doppler-SecretOps-purple.svg)](https://doppler.com/)
@@ -6,12 +6,12 @@
 
 > **A SOTA (State of the Art) Zero-Leak Secret Management Skill for AI Agents.**
 
-This repository provides the official `skill-doppler-manager` for Gemini CLI and other AI agents. It completely abolishes the traditional "fetch to local `.env`" workflow, enforcing a memory-only secret injection architecture based on **Doppler**.
+This repository provides the official `skill-doppler-manager` for Gemini CLI and other AI agents. It acts as the "secure hand" for LLMs to manage and inject secrets, completely abolishing the traditional "fetch to local `.env`" workflow in favor of memory-only injection via **Doppler**.
 
 By installing this skill, your AI agents will learn to:
 1. 🛑 **Never leak, print, or commit raw secrets.**
-2. 🏛️ **Respect the 9-Grid (Blast Radius) Isolation Architecture.**
-3. 🔐 **Require Human-in-the-Loop JITA (Just-in-Time Access) for cross-domain credentials.**
+2. 💉 **Inject secrets directly into processes using `doppler run`.**
+3. 🔐 **Require Human-in-the-Loop (HITL) for secret creation and modification.**
 
 ---
 
@@ -19,8 +19,8 @@ By installing this skill, your AI agents will learn to:
 
 - `SKILL.md`: The core neural instructions and operational mandates for the AI agent.
 - `spec.md`: The declarative architectural specification and design philosophy.
-- `references/SOP.md`: The human-centric Standard Operating Procedure for bootstrapping Doppler.
 - `scripts/check_status.sh`: A lightweight, LLM-friendly status check script.
+- `references/`: Documentation for human operators and AI context (SOPs, Architecture Decisions).
 
 ## 🚀 Installation
 
@@ -30,33 +30,25 @@ This skill is designed to be installed directly into your Gemini CLI environment
 # 1. Clone this repository
 git clone https://github.com/plasmayang/skill-doppler-manager.git
 
-# 2. Package the skill (Requires Gemini CLI bundled skill-creator)
-# If you don't have the packager, you can directly link the folder
+# 2. Package the skill
 gemini skills install ./skill-doppler-manager --scope workspace
 
 # 3. Reload Gemini CLI
 /skills reload
 ```
 
-## 🏛️ The 9-Grid Architecture
+## 🧠 Design Philosophy (Prompt vs. Code)
 
-To prevent a compromised or hallucinating AI from accessing all your secrets, this skill enforces a strict 9-Grid logical isolation. The AI default scope is **ONLY** `keys4_token-providers`. For any other scope, the AI must explicitly ask for your permission (JITA).
+We strictly separate concerns to optimize LLM context window usage:
+- **`SKILL.md` (Prompt):** Behavioral guardrails (Zero-Leak), workflow orchestration (HITL), and injection syntax.
+- **`scripts/` (Code):** Deterministic environment checks (e.g., `check_status.sh` returning boolean-like LLM-friendly strings).
+- **`references/` (Docs):** Human-centric setup guides and historical architectural decisions.
 
-1. `keys4_network-core` (Tailscale, Cloudflare)
-2. `keys4_network-nodes` (SSH Keys)
-3. `keys4_backup-core` (S3, B2)
-4. `keys4_private-services` (Database, Redis)
-5. `keys4_identity-providers` (OAuth, Auth0)
-6. `keys4_token-providers` **(AI API Keys - Default Agent Scope)**
-7. `keys4_observability-telemetry` (Grafana, Datadog)
-8. `keys4_notification-channels` (Webhooks, Telegram)
-9. `keys4_delivery-pipelines` (Docker, NPM)
-
-*(See `spec.md` for deep architectural details).*
+See `references/architecture_decisions.md` for a deep dive into why we built it this way.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request to improve the SOPs or AI instructions. When updating `SKILL.md`, remember the **Progressive Disclosure** principle: keep the main prompt lean and delegate long lists to the `references/` directory.
+Contributions are welcome! Please feel free to submit a Pull Request to improve the SOPs or AI instructions.
 
 ## 📜 License
 

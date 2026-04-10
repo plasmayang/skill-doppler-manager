@@ -1,0 +1,76 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-shell:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './scripts'
+
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Markdownlint
+        run: npm install -g markdownlint-cli
+      - name: Run Markdownlint
+        run: markdownlint "**/*.md" --ignore node_modules
+
+  test-scripts:
+    name: Test Scripts with BATS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup BATS
+        uses: migalabs/setup-bats@v1
+        with:
+          bats-version: 1.11.0
+      - name: Run Tests
+        run: bats tests/check_status.bats
+
+  eval-prompt:
+    name: LLM Prompt Evaluation (Promptfoo)
+    runs-on: ubuntu-latest
+    # To run this in Github Actions, you need to add OPENAI_API_KEY to your repository secrets.
+    # We use continue-on-error here so the pipeline doesn't completely fail if the key is missing on forks.
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - name: Install Promptfoo
+        run: npm install -g promptfoo
+        
+      - name: Run Prompt Evaluation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "Skipping Promptfoo Eval because OPENAI_API_KEY is not set in secrets."
+            exit 0
+          fi
+          cd tests
+          promptfoo eval --no-progress-bar --no-write

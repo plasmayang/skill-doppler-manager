@@ -1,0 +1,14 @@
+# Default Markdownlint configuration for AI Prompts and Technical Documentation
+default: true
+
+# Ignore line length: AI prompts and CLI commands often require long, unbroken lines.
+MD013: false
+
+# Allow inline HTML: Badges in README use inline HTML.
+MD033: false
+
+# Allow duplicate headings: Often used in CHANGELOGs or specific prompt structures.
+MD024: false
+
+# Allow bare URLs: Sometimes necessary in references or scripts docs.
+MD034: false
