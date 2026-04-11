@@ -70,7 +70,7 @@ Always use `scripts/check_status.sh` to check environment status. It outputs str
 ### Error Code Reference
 
 | Code | Status | Meaning | Recovery |
-|------|--------|---------|----------|
+|------| ------ | ------ | ------ |
 | E000 | OK | Authenticated and configured | Ready to use |
 | E001 | ERROR | Doppler CLI not installed | Install via `brew install doppler-cli` or see SOP.md#phase-1 |
 | E002 | ERROR | Not authenticated | Run `doppler login` |
@@ -113,12 +113,14 @@ doppler run -p <project> -c prd -- <command>
 When secrets are rotated, the LLM should detect stale secret errors and trigger a re-authentication flow:
 
 **Detection**: If `doppler run` fails with auth/secrets errors after previously working:
+
 1. Run `scripts/check_status.sh` to assess
 2. If E003 (TOKEN_EXPIRED) or new auth errors, inform the user
 3. Provide the re-authentication command: `doppler login`
 4. After re-auth, re-verify with `scripts/check_status.sh`
 
 **HITL for Rotation**: If the user mentions secret rotation:
+
 - Do NOT automatically re-fetch secrets
 - Ask the user to confirm the rotation is complete and to re-run `doppler login` if needed
 
@@ -127,16 +129,19 @@ When secrets are rotated, the LLM should detect stale secret errors and trigger 
 For non-interactive environments, use Service Tokens instead of interactive login:
 
 **Configuration**:
+
 ```bash
 doppler configure set token dp.st.xxxxxx
 ```
 
 **Verification**: For headless environments, you may proactively check the token type:
+
 ```bash
 doppler configure get token --plain | grep -q "dp.st." && echo "SERVICE_TOKEN" || echo "USER_TOKEN"
 ```
 
 **Rules for Headless**:
+
 - Do NOT attempt interactive `doppler login` in headless mode
 - If token is a user token in headless context, warn the user about potential auth expiry
 - Recommend migrating to Service Tokens for persistent environments
@@ -144,6 +149,7 @@ doppler configure get token --plain | grep -q "dp.st." && echo "SERVICE_TOKEN" |
 ### 7. Secret Leak Detection & Response
 
 **If you accidentally receive a secret in context** (e.g., user pastes it):
+
 1. **NEVER echo, repeat, or acknowledge the secret value**
 2. **immediately** run `/claude/audit log` or the audit script if available
 3. Inform the user: "I've detected a secret in the input. For security, I will not process it. Please use the Doppler CLI to set this secret instead."
@@ -155,10 +161,12 @@ doppler configure get token --plain | grep -q "dp.st." && echo "SERVICE_TOKEN" |
 ### 8. Secret Access Patterns
 
 **Allowed Patterns**:
+
 - `doppler run -- <command>` - Direct injection (recommended)
 - `doppler secrets get <KEY> --plain` - Only when the value is immediately consumed and not displayed
 
 **Forbidden Patterns** (NEVER do these):
+
 - `echo $SECRET` or any printing of secrets
 - Writing secrets to any file (`.env`, `config.json`, logs, etc.)
 - Passing secrets as command-line arguments that get logged
@@ -204,7 +212,7 @@ If a secret leak is suspected or confirmed:
 ## Error Code Reference (Complete)
 
 | Code | Status | Meaning | Recovery |
-|------|--------|---------|----------|
+|------| ------ | ------ | ------ |
 | E000 | OK | Authenticated and configured | Ready to use |
 | E001 | ERROR | Doppler CLI not installed | Install via `brew install doppler-cli` or see SOP.md#phase-1 |
 | E002 | ERROR | Not authenticated | Run `doppler login` |

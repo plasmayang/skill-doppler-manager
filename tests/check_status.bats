@@ -187,7 +187,6 @@ EOF
     run bash ./scripts/check_status.sh
 
     # Verify output is valid JSON by parsing it
-    run bash -c 'echo "$output" | python3 -c "import json,sys; json.load(sys.stdin); print(\"valid\")"'
+    echo "$output" | python3 -c "import json,sys; json.load(sys.stdin); print('valid')"
     [ "$status" -eq 0 ]
-    [[ "$output" == "valid" ]]
 }
