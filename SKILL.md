@@ -70,7 +70,7 @@ Always use `scripts/check_status.sh` to check environment status. It outputs str
 ### Error Code Reference
 
 | Code | Status | Meaning | Recovery |
-|------ | ------ | ------ | ------ |
+| --- | --- | --- | --- |
 | E000 | OK | Authenticated and configured | Ready to use |
 | E001 | ERROR | Doppler CLI not installed | Install via `brew install doppler-cli` or see SOP.md#phase-1 |
 | E002 | ERROR | Not authenticated | Run `doppler login` |
@@ -212,7 +212,7 @@ If a secret leak is suspected or confirmed:
 ## Error Code Reference (Complete)
 
 | Code | Status | Meaning | Recovery |
-|------ | ------ | ------ | ------ |
+| --- | --- | --- | --- |
 | E000 | OK | Authenticated and configured | Ready to use |
 | E001 | ERROR | Doppler CLI not installed | Install via `brew install doppler-cli` or see SOP.md#phase-1 |
 | E002 | ERROR | Not authenticated | Run `doppler login` |
