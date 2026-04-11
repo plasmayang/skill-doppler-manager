@@ -86,44 +86,44 @@
   "hotPaths": [
     {
       "path": "",
-      "accessCount": 38,
-      "lastAccessed": 1775885599076,
+      "accessCount": 43,
+      "lastAccessed": 1775886670547,
       "type": "directory"
     },
     {
-      "path": "tests/verify_environment.bats",
-      "accessCount": 30,
-      "lastAccessed": 1775883233335,
+      "path": "scripts/audit_secrets.sh",
+      "accessCount": 32,
+      "lastAccessed": 1775886380926,
       "type": "file"
     },
     {
       "path": "tests/audit_secrets.bats",
-      "accessCount": 30,
-      "lastAccessed": 1775884150746,
+      "accessCount": 31,
+      "lastAccessed": 1775886366840,
       "type": "file"
     },
     {
-      "path": "scripts/audit_secrets.sh",
-      "accessCount": 30,
-      "lastAccessed": 1775885513639,
+      "path": "tests/verify_environment.bats",
+      "accessCount": 31,
+      "lastAccessed": 1775886397719,
+      "type": "file"
+    },
+    {
+      "path": "SKILL.md",
+      "accessCount": 21,
+      "lastAccessed": 1775886372312,
       "type": "file"
     },
     {
       "path": "scripts",
-      "accessCount": 19,
-      "lastAccessed": 1775885589210,
+      "accessCount": 20,
+      "lastAccessed": 1775887095891,
       "type": "directory"
     },
     {
-      "path": "SKILL.md",
-      "accessCount": 18,
-      "lastAccessed": 1775885051768,
-      "type": "file"
-    },
-    {
       "path": "README.md",
-      "accessCount": 17,
-      "lastAccessed": 1775884946567,
+      "accessCount": 18,
+      "lastAccessed": 1775886027794,
       "type": "file"
     },
     {
@@ -133,9 +133,15 @@
       "type": "file"
     },
     {
+      "path": "scripts/tracing.sh",
+      "accessCount": 13,
+      "lastAccessed": 1775886387752,
+      "type": "file"
+    },
+    {
       "path": "scripts/verify_environment.sh",
-      "accessCount": 12,
-      "lastAccessed": 1775885541394,
+      "accessCount": 13,
+      "lastAccessed": 1775886387769,
       "type": "file"
     },
     {
@@ -146,38 +152,32 @@
     },
     {
       "path": "scripts/check_status.sh",
-      "accessCount": 10,
-      "lastAccessed": 1775885833730,
+      "accessCount": 12,
+      "lastAccessed": 1775886371355,
       "type": "file"
     },
     {
-      "path": "tests/emergency_seal.bats",
-      "accessCount": 9,
-      "lastAccessed": 1775884276920,
+      "path": "scripts/secret_manager_interface.sh",
+      "accessCount": 11,
+      "lastAccessed": 1775886387702,
       "type": "file"
     },
     {
       "path": "scripts/managers/doppler.sh",
-      "accessCount": 9,
-      "lastAccessed": 1775885759326,
+      "accessCount": 11,
+      "lastAccessed": 1775886405801,
       "type": "file"
     },
     {
-      "path": "scripts/tracing.sh",
-      "accessCount": 9,
-      "lastAccessed": 1775885822513,
+      "path": "tests/emergency_seal.bats",
+      "accessCount": 10,
+      "lastAccessed": 1775886414666,
       "type": "file"
     },
     {
       "path": "scripts/managers/aws_secrets.sh",
       "accessCount": 8,
       "lastAccessed": 1775885759180,
-      "type": "file"
-    },
-    {
-      "path": "scripts/secret_manager_interface.sh",
-      "accessCount": 7,
-      "lastAccessed": 1775885513187,
       "type": "file"
     },
     {
@@ -188,8 +188,20 @@
     },
     {
       "path": "scripts/emergency_seal.sh",
-      "accessCount": 6,
-      "lastAccessed": 1775885513748,
+      "accessCount": 7,
+      "lastAccessed": 1775886405834,
+      "type": "file"
+    },
+    {
+      "path": "scripts/error_codes.sh",
+      "accessCount": 7,
+      "lastAccessed": 1775886414603,
+      "type": "file"
+    },
+    {
+      "path": "references/architecture_decisions.md",
+      "accessCount": 7,
+      "lastAccessed": 1775886424511,
       "type": "file"
     },
     {
@@ -212,32 +224,32 @@
     },
     {
       "path": "package.json",
-      "accessCount": 5,
-      "lastAccessed": 1775884946476,
-      "type": "file"
-    },
-    {
-      "path": "scripts/error_codes.sh",
-      "accessCount": 5,
-      "lastAccessed": 1775885513094,
-      "type": "file"
-    },
-    {
-      "path": "references/SOP.md",
-      "accessCount": 4,
-      "lastAccessed": 1775881048376,
-      "type": "file"
-    },
-    {
-      "path": "tests/leak_attempts.bats",
-      "accessCount": 4,
-      "lastAccessed": 1775881114524,
+      "accessCount": 6,
+      "lastAccessed": 1775886027358,
       "type": "file"
     },
     {
       "path": "tests/check_status.bats",
-      "accessCount": 4,
-      "lastAccessed": 1775881114732,
+      "accessCount": 6,
+      "lastAccessed": 1775886366804,
+      "type": "file"
+    },
+    {
+      "path": "references/SOP.md",
+      "accessCount": 5,
+      "lastAccessed": 1775886043589,
+      "type": "file"
+    },
+    {
+      "path": "tests/leak_attempts.bats",
+      "accessCount": 5,
+      "lastAccessed": 1775886397630,
+      "type": "file"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "accessCount": 5,
+      "lastAccessed": 1775886443900,
       "type": "file"
     },
     {
@@ -247,21 +259,21 @@
       "type": "file"
     },
     {
+      "path": "references/security_assessment.md",
+      "accessCount": 3,
+      "lastAccessed": 1775886062782,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/run_tests.sh",
+      "accessCount": 3,
+      "lastAccessed": 1775886075562,
+      "type": "file"
+    },
+    {
       "path": "spec.md",
       "accessCount": 2,
       "lastAccessed": 1775878777469,
-      "type": "file"
-    },
-    {
-      "path": "references/architecture_decisions.md",
-      "accessCount": 2,
-      "lastAccessed": 1775881048594,
-      "type": "file"
-    },
-    {
-      "path": "references/security_assessment.md",
-      "accessCount": 2,
-      "lastAccessed": 1775881048672,
       "type": "file"
     },
     {
@@ -280,12 +292,6 @@
       "path": "tests/integration/04_hitl_workflow/02_audit_logging.sh",
       "accessCount": 2,
       "lastAccessed": 1775885506276,
-      "type": "file"
-    },
-    {
-      "path": "tests/integration/run_tests.sh",
-      "accessCount": 2,
-      "lastAccessed": 1775885506377,
       "type": "file"
     },
     {
@@ -313,15 +319,15 @@
       "type": "file"
     },
     {
-      "path": "CHANGELOG.md",
+      "path": "references/manager_reference.md",
       "accessCount": 2,
-      "lastAccessed": 1775885556729,
+      "lastAccessed": 1775886062841,
       "type": "file"
     },
     {
-      "path": "references/manager_reference.md",
-      "accessCount": 1,
-      "lastAccessed": 1775879138009,
+      "path": "tests/promptfooconfig.yaml",
+      "accessCount": 2,
+      "lastAccessed": 1775886088259,
       "type": "file"
     },
     {
@@ -329,12 +335,6 @@
       "accessCount": 1,
       "lastAccessed": 1775880015099,
       "type": "directory"
-    },
-    {
-      "path": "tests/promptfooconfig.yaml",
-      "accessCount": 1,
-      "lastAccessed": 1775881055012,
-      "type": "file"
     },
     {
       "path": ".markdownlint.yaml",

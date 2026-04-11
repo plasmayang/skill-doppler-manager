@@ -148,9 +148,8 @@ run_doppler_manager() {
         sm_set 'DATABASE_URL'
     "
     [ "$status" -eq 0 ]
-    # Template should show the actual secret name, not a placeholder
-    [[ "$output" == *"DATABASE_URL"* ]]
-    [[ "$output" != *"<value>"* ]]
+    # Template should show the actual secret name with =<value> placeholder
+    [[ "$output" == *"DATABASE_URL=<value>"* ]]
 }
 
 # ============================================

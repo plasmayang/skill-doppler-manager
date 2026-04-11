@@ -253,6 +253,7 @@ We implement the `.claude/skills/doppler-skill/` directory structure:
 ### Context
 
 Secrets should not be held indefinitely. We need time-based lease management to:
+
 - Force periodic re-authentication
 - Enable secret rotation detection
 - Support short-lived credentials (Vault, AWS IAM roles)
@@ -260,6 +261,7 @@ Secrets should not be held indefinitely. We need time-based lease management to:
 ### Decision
 
 We implement `sm_lease <manager> <secret>` which:
+
 1. Fetches the secret with TTL metadata
 2. Tracks lease expiration in `~/.cache/doppler-manager/leases/`
 3. Returns `{value, expires_at, renewal_required}` JSON
@@ -286,6 +288,7 @@ Stale secrets (unused for > 90 days) are a security risk. We need automated dete
 ### Decision
 
 We implement `sm_rotate <manager> <secret>`:
+
 1. Check last access timestamp from audit log
 2. If > 90 days, emit WARN and suggest rotation
 3. For managers with rotation APIs (Doppler, Vault), trigger rotation
@@ -312,6 +315,7 @@ For regulated environments, AI agents should not access secrets without human ap
 ### Decision
 
 We implement `sm_request`, `sm_approve`, `sm_reject`:
+
 1. `sm_request <secret> <reason>` creates JSON request in `~/.config/doppler-manager/requests/`
 2. `sm_list_requests` shows pending requests
 3. `sm_approve <id>` or `sm_reject <id>` updates status
@@ -338,6 +342,7 @@ Audit logging endpoints could be overwhelmed by a malicious or buggy script maki
 ### Decision
 
 We implement token bucket rate limiting in `rate_limit.sh`:
+
 1. Each operation type has a bucket (sm_run: 60/min, sm_fetch: 120/min, sm_audit: 30/min)
 2. Buckets stored in `~/.cache/doppler-manager/rate_limits/`
 3. Exceeded limits return E429 with retry-after hint
@@ -364,6 +369,7 @@ Current tracing is in-memory only. For production deployments, traces should exp
 ### Decision
 
 We enhance `tracing.sh` to:
+
 1. Export spans to `${OTEL_ENDPOINT}/v1/traces` when OTEL_EXPORTER is set
 2. Use OTLP HTTP protocol with JSON encoding
 3. Batch spans for efficiency (flush on 100 spans or 5 second timeout)
@@ -390,6 +396,7 @@ Accidental secret commits could leak credentials. We need pre-merge scanning to 
 ### Decision
 
 We add `scan-secrets` job to CI:
+
 1. Install `git-secrets` via apt or direct download
 2. Register built-in patterns (AWS, GCP, Azure, generic)
 3. Run `git secrets --scan` on all files

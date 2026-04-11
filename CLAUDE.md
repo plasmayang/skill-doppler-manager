@@ -37,6 +37,7 @@ This is the top-level entry point for the Doppler Manager skill. For detailed be
 ## The Prime Directive (Zero-Leak)
 
 Under no circumstances should you:
+
 - Print raw secrets to the chat interface
 - Write secrets to local files on disk
 - Execute commands that expose secrets in terminal history
