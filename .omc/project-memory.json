@@ -86,8 +86,8 @@
   "hotPaths": [
     {
       "path": "",
-      "accessCount": 43,
-      "lastAccessed": 1775886670547,
+      "accessCount": 44,
+      "lastAccessed": 1775887756502,
       "type": "directory"
     },
     {
@@ -146,8 +146,8 @@
     },
     {
       "path": "AUDIT_REVIEW.md",
-      "accessCount": 12,
-      "lastAccessed": 1775885903042,
+      "accessCount": 13,
+      "lastAccessed": 1775887767818,
       "type": "file"
     },
     {
@@ -181,6 +181,12 @@
       "type": "file"
     },
     {
+      "path": "references/architecture_decisions.md",
+      "accessCount": 8,
+      "lastAccessed": 1775887861010,
+      "type": "file"
+    },
+    {
       "path": "scripts/managers/vault.sh",
       "accessCount": 7,
       "lastAccessed": 1775885524316,
@@ -196,12 +202,6 @@
       "path": "scripts/error_codes.sh",
       "accessCount": 7,
       "lastAccessed": 1775886414603,
-      "type": "file"
-    },
-    {
-      "path": "references/architecture_decisions.md",
-      "accessCount": 7,
-      "lastAccessed": 1775886424511,
       "type": "file"
     },
     {
@@ -331,16 +331,16 @@
       "type": "file"
     },
     {
+      "path": ".markdownlint.yaml",
+      "accessCount": 2,
+      "lastAccessed": 1775888054925,
+      "type": "file"
+    },
+    {
       "path": "tests",
       "accessCount": 1,
       "lastAccessed": 1775880015099,
       "type": "directory"
-    },
-    {
-      "path": ".markdownlint.yaml",
-      "accessCount": 1,
-      "lastAccessed": 1775881075089,
-      "type": "file"
     },
     {
       "path": "tests/promptfooconfig_adversarial.yaml",
