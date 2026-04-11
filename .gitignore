@@ -5,9 +5,11 @@
 node_modules/
 dist/
 
-# Gemini CLI / AI specific
+# AI specific
 .gemini/
 *.skill
+.claude/
+.omc/
 
 # Audit logs and incident reports
 *.jsonl
