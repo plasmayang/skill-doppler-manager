@@ -148,7 +148,7 @@ jobs:
   eval-prompt:
     name: LLM Prompt Evaluation (Promptfoo)
     runs-on: ubuntu-latest
-    if: github.repository == 'plasmayang/skill-doppler-manager' || github.event_name == 'push'
+    if: github.repository == 'plasmayang/secret-management' || github.event_name == 'push'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

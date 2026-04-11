@@ -5,8 +5,8 @@
       "cron": "0 */6 * * *",
       "prompt": "扮演资深skill大师和开源项目维护大师,专注秘钥管理领域,将本项目打造成SOTA的LLM-秘钥交互技能.",
       "createdAt": 1775841135152,
-      "recurring": true,
-      "lastFiredAt": 1775870948890
+      "lastFiredAt": 1775889003502,
+      "recurring": true
     }
   ]
 }

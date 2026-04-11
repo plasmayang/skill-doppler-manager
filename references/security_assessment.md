@@ -1,6 +1,6 @@
 # Doppler Manager - Security Assessment
 
-This document outlines the security assessment procedures, verification checklists, and incident response protocols for the `skill-doppler-manager` skill.
+This document outlines the security assessment procedures, verification checklists, and incident response protocols for the `secret-management` skill.
 
 ## Table of Contents
 
@@ -198,7 +198,7 @@ If adversarial prompting is suspected:
 For security vulnerabilities, contact:
 
 - **Repository Owner**: plasmayang
-- **Security Policy**: [GitHub Security Advisories](https://github.com/plasmayang/skill-doppler-manager/security/advisories)
+- **Security Policy**: [GitHub Security Advisories](https://github.com/plasmayang/secret-management/security/advisories)
 
 ---
 

@@ -1,8 +1,8 @@
-# Critical Audit Review — skill-doppler-manager
+# Critical Audit Review — secret-management
 
 **Reviewer**: Senior Security Architect & Open Source Maintainer
 **Date**: 2026-04-11
-**Project**: skill-doppler-manager (plasmayang/skill-doppler-manager)
+**Project**: secret-management (plasmayang/secret-management)
 **Version**: v1.2.0 (SOTA Transformation)
 
 ---

@@ -74,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Initial release** of skill-doppler-manager
+- **Initial release** of secret-management
 - **Doppler CLI integration** as primary secret manager
 - **BATS test suite** with 78 tests covering all core scripts
 - **GitHub Actions CI/CD** with ShellCheck, markdownlint, BATS, and Promptfoo
@@ -83,6 +83,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Audit logging** via `audit_secrets.sh` (JSONL format)
 - **Error code system** for structured failure diagnosis
 
-[1.2.0]: https://github.com/plasmayang/skill-doppler-manager/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/plasmayang/skill-doppler-manager/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/plasmayang/skill-doppler-manager/releases/tag/v1.0.0
+[1.2.0]: https://github.com/plasmayang/secret-management/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/plasmayang/secret-management/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/plasmayang/secret-management/releases/tag/v1.0.0

@@ -1,6 +1,6 @@
 ---
-name: doppler-manager
-description: Configure and manage secret managers (Doppler, Vault, AWS, etc.) for secure, zero-leak secret injection. Use this skill when executing applications that require environment variables, or when assisting the user in setting up secret management.
+name: secret-management
+description: Zero-leak secret management for AI agents. Configure and manage secret managers (Doppler, Vault, AWS, GCP, Azure) for secure, memory-only secret injection. Use this skill when executing applications that require secrets, or when assisting the user in setting up secret management.
 ---
 
 # Doppler Manager (Multi-Secret-Manager Support)

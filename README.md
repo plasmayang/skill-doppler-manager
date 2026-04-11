@@ -1,9 +1,9 @@
-# skill-doppler-manager
+# secret-management
 
 > Zero-Trust SecretOps for AI Agents — Memory-Only Secret Injection
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![ShellCheck](https://github.com/plasmayang/skill-doppler-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/plasmayang/skill-doppler-manager/actions)
+[![ShellCheck](https://github.com/plasmayang/secret-management/actions/workflows/ci.yml/badge.svg)](https://github.com/plasmayang/secret-management/actions)
 [![BATS Tests](https://img.shields.io/badge/BATS-Tests-blue.svg)](tests/)
 
 ## Vision
@@ -55,8 +55,8 @@ Eliminate secret exposure from AI agent workflows entirely. This project provide
 ### 1. Install
 
 ```bash
-git clone https://github.com/plasmayang/skill-doppler-manager.git
-cd skill-doppler-manager
+git clone https://github.com/plasmayang/secret-management.git
+cd secret-management
 ```
 
 ### 2. Configure Secret Manager
@@ -96,7 +96,7 @@ The AI agent will automatically:
 ## Architecture
 
 ```
-skill-doppler-manager/
+secret-management/
 ├── SKILL.md                          # AI behavioral mandates (Zero-Leak, HITL)
 ├── scripts/
 │   ├── check_status.sh              # Environment validation (JSON output)

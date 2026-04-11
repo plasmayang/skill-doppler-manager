@@ -50,7 +50,7 @@ The following are within scope for security reports:
 
 ### Zero-Leak Architecture
 
-`skill-doppler-manager` enforces a **zero-leak architecture** where:
+`secret-management` enforces a **zero-leak architecture** where:
 
 1. **Memory-only injection**: Secrets are injected into processes via secret managers (Doppler, Vault, etc.) and never touch the context window, disk, or shell history
 2. **Human-in-the-Loop (HITL)**: AI agents cannot autonomously create, modify, or delete secrets

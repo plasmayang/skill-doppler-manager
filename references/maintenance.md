@@ -1,6 +1,6 @@
 # Doppler Manager - Maintenance Playbook
 
-This document provides guidance for maintaining and extending the `skill-doppler-manager` project.
+This document provides guidance for maintaining and extending the `secret-management` project.
 
 ## Table of Contents
 

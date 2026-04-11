@@ -1,6 +1,6 @@
-# Contributing to skill-doppler-manager
+# Contributing to secret-management
 
-Thank you for your interest in contributing to skill-doppler-manager, the Zero-Trust SecretOps framework for AI agents.
+Thank you for your interest in contributing to secret-management, the Zero-Trust SecretOps framework for AI agents.
 
 ## Code of Conduct
 
@@ -61,8 +61,8 @@ git commit -m "ci: add shellcheck to lint pipeline"
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/plasmayang/skill-doppler-manager.git
-cd skill-doppler-manager
+git clone https://github.com/plasmayang/secret-management.git
+cd secret-management
 
 # 2. Install dependencies
 npm install
@@ -130,6 +130,6 @@ Releases are managed by the maintainer using semantic versioning:
 
 ## Getting Help
 
-- **Issues**: Open at https://github.com/plasmayang/skill-doppler-manager/issues
+- **Issues**: Open at https://github.com/plasmayang/secret-management/issues
 - **Discussions**: Use GitHub Discussions
 - **Security**: See SECURITY.md

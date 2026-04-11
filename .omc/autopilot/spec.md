@@ -1,8 +1,8 @@
-# skill-doppler-manager SOTA Specification
+# secret-management SOTA Specification
 
 ## 1. Vision & Goal
 
-Transform `skill-doppler-manager` into the **definitive SOTA LLM-Secret Interaction Skill** — a Zero-Trust SecretOps framework that sets the industry standard for how AI agents safely handle secrets. The skill must be **adversarially hardened**, **observability-enabled**, and **battle-tested**.
+Transform `secret-management` into the **definitive SOTA LLM-Secret Interaction Skill** — a Zero-Trust SecretOps framework that sets the industry standard for how AI agents safely handle secrets. The skill must be **adversarially hardened**, **observability-enabled**, and **battle-tested**.
 
 **Harness-Agnostic**: This skill is platform-independent. It works with any AI agent harness (Claude Code, Gemini CLI, OpenAI Codex, Cursor, Windsurf, Go coder, or any LLM framework). The name "doppler-manager" reflects the secret manager used, not the AI harness.
 
@@ -62,7 +62,7 @@ Currently only `check_status.sh` is fully implemented. The manager abstraction i
 ## 3. Directory Structure (Target)
 
 ```
-skill-doppler-manager/
+secret-management/
 ├── SKILL.md                          # Core behavioral mandates
 ├── spec.md                           # This specification
 ├── README.md                         # Project overview
