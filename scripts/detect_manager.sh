@@ -18,6 +18,7 @@ declare -A DETECTION_PRIORITY=(
     ["aws_secrets"]=60
     ["gcp_secret"]=40
     ["azure_key"]=30
+    ["infisical"]=70
 )
 
 # Detection results
@@ -157,6 +158,32 @@ detect_azure_key() {
     return 1
 }
 
+# detect_infisical() - Detect Infisical CLI
+detect_infisical() {
+    # Check for 'infisical' or 'fi' CLI
+    local cli=""
+    if command -v infisical &> /dev/null; then
+        cli="infisical"
+    elif command -v fi &> /dev/null; then
+        cli="fi"
+    fi
+
+    if [[ -n "$cli" ]]; then
+        # Check if authenticated by trying to list secrets
+        if $cli secrets list --limit 1 &>/dev/null; then
+            DETECTED_MANAGERS["infisical"]="${SCRIPT_DIR}/managers/infisical.sh"
+            DETECTION_REASONS["infisical"]="Infisical CLI installed and authenticated"
+            return 0
+        else
+            DETECTION_REASONS["infisical"]="Infisical CLI installed but not authenticated"
+            return 1
+        fi
+    fi
+
+    DETECTION_REASONS["infisical"]="Infisical CLI not found in PATH"
+    return 1
+}
+
 # ============================================
 # MAIN DETECTION LOGIC
 # ============================================
@@ -171,6 +198,7 @@ detect_all() {
     detect_aws_secrets
     detect_gcp_secret
     detect_azure_key
+    detect_infisical
 
     echo ""
 }
@@ -213,6 +241,7 @@ print_detection_report() {
         echo "  - AWS Secrets Manager - Configure AWS credentials"
         echo "  - GCP Secret Manager - Run 'gcloud auth login'"
         echo "  - Azure Key Vault - Run 'az login'"
+        echo "  - Infisical - Run 'infisical login'"
         echo ""
         return 1
     fi

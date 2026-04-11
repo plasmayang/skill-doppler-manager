@@ -1,0 +1,221 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1775878705866,
+  "projectRoot": "/workspaces/skill-doppler-manager",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "scripts",
+      "tests"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "references": {
+      "path": "references",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1775878705819,
+      "keyFiles": [
+        "SOP.md",
+        "architecture_decisions.md",
+        "maintenance.md",
+        "security_assessment.md"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 9,
+      "lastAccessed": 1775878705820,
+      "keyFiles": [
+        "audit_secrets.sh",
+        "check_status.sh",
+        "detect_manager.sh",
+        "emergency_seal.sh",
+        "error_codes.sh"
+      ]
+    },
+    "tests": {
+      "path": "tests",
+      "purpose": "Test files",
+      "fileCount": 8,
+      "lastAccessed": 1775878705839,
+      "keyFiles": [
+        "audit_secrets.bats",
+        "check_status.bats",
+        "emergency_seal.bats",
+        "eval_prompt.txt",
+        "final_eval_prompt.txt"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "",
+      "accessCount": 11,
+      "lastAccessed": 1775878935376,
+      "type": "directory"
+    },
+    {
+      "path": "scripts/audit_secrets.sh",
+      "accessCount": 10,
+      "lastAccessed": 1775879308409,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 9,
+      "lastAccessed": 1775879903328,
+      "type": "file"
+    },
+    {
+      "path": "scripts/detect_manager.sh",
+      "accessCount": 8,
+      "lastAccessed": 1775879095400,
+      "type": "file"
+    },
+    {
+      "path": "SKILL.md",
+      "accessCount": 5,
+      "lastAccessed": 1775878885339,
+      "type": "file"
+    },
+    {
+      "path": "spec.md",
+      "accessCount": 2,
+      "lastAccessed": 1775878777469,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 2,
+      "lastAccessed": 1775878912072,
+      "type": "file"
+    },
+    {
+      "path": "scripts/emergency_seal.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775878786094,
+      "type": "file"
+    },
+    {
+      "path": "references/SOP.md",
+      "accessCount": 1,
+      "lastAccessed": 1775878786312,
+      "type": "file"
+    },
+    {
+      "path": "scripts/check_status.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775878786352,
+      "type": "file"
+    },
+    {
+      "path": "scripts/secret_manager_interface.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775878911783,
+      "type": "file"
+    },
+    {
+      "path": "references/architecture_decisions.md",
+      "accessCount": 1,
+      "lastAccessed": 1775878912004,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/doppler.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775878912035,
+      "type": "file"
+    },
+    {
+      "path": "tests/check_status.bats",
+      "accessCount": 1,
+      "lastAccessed": 1775878927079,
+      "type": "file"
+    },
+    {
+      "path": "references/security_assessment.md",
+      "accessCount": 1,
+      "lastAccessed": 1775878947341,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/vault.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775879050376,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/aws_secrets.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775879050717,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/gcp_secret.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775879051070,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/azure_key.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775879051402,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/infisical.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775879051768,
+      "type": "file"
+    },
+    {
+      "path": "references/manager_reference.md",
+      "accessCount": 1,
+      "lastAccessed": 1775879138009,
+      "type": "file"
+    },
+    {
+      "path": "tests/audit_secrets.bats",
+      "accessCount": 1,
+      "lastAccessed": 1775879183785,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

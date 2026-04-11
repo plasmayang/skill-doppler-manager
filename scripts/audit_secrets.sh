@@ -35,20 +35,7 @@ log_audit() {
     local event_data="$2"
     local log_file="${3:-$AUDIT_LOG_FILE}"
 
-    local event_json
-    event_json=$(cat <<EOF
-{
-  "id": "$(generate_id)",
-  "timestamp": "$(timestamp)",
-  "type": "$event_type",
-  "data": $event_data,
-  "agent": "doppler-manager-skill",
-  "version": "1.0.0"
-}
-EOF
-)
-
-    echo "$event_json" >> "$log_file"
+    printf '%s\n' "{\"id\":\"$(generate_id)\",\"timestamp\":\"$(timestamp)\",\"type\":\"$event_type\",\"data\":$event_data,\"agent\":\"doppler-manager-skill\",\"version\":\"1.0.0\"}" >> "$log_file"
 }
 
 # Log a secret access event
@@ -65,24 +52,11 @@ log_secret_access() {
 
     local data_json
     if [[ -n "$error_msg" ]]; then
-        data_json=$(cat <<EOF
-{
-  "secret_name": "$secret_name",
-  "access_method": "$access_method",
-  "success": $success_json,
-  "error": $(printf '%s' "$error_msg" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo "\"$error_msg\"")
-}
-EOF
-)
+        local error_json
+        error_json=$(printf '%s' "$error_msg" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo "\"$error_msg\"")
+        data_json="{\"secret_name\":\"$secret_name\",\"access_method\":\"$access_method\",\"success\":$success_json,\"error\":$error_json}"
     else
-        data_json=$(cat <<EOF
-{
-  "secret_name": "$secret_name",
-  "access_method": "$access_method",
-  "success": $success_json
-}
-EOF
-)
+        data_json="{\"secret_name\":\"$secret_name\",\"access_method\":\"$access_method\",\"success\":$success_json}"
     fi
 
     log_audit "SECRET_ACCESS" "$data_json"
@@ -96,22 +70,11 @@ log_leak_detected() {
 
     local data_json
     if [[ -n "$context" ]]; then
-        data_json=$(cat <<EOF
-{
-  "leak_type": "$leak_type",
-  "context": $(printf '%s' "$context" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo "\"redacted\""),
-  "severity": "$severity"
-}
-EOF
-)
+        local context_json
+        context_json=$(printf '%s' "$context" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo "\"redacted\"")
+        data_json="{\"leak_type\":\"$leak_type\",\"context\":$context_json,\"severity\":\"$severity\"}"
     else
-        data_json=$(cat <<EOF
-{
-  "leak_type": "$leak_type",
-  "severity": "$severity"
-}
-EOF
-)
+        data_json="{\"leak_type\":\"$leak_type\",\"severity\":\"$severity\"}"
     fi
 
     log_audit "LEAK_DETECTED" "$data_json" "$ALERT_LOG_FILE"
@@ -129,23 +92,9 @@ log_auth_event() {
 
     local data_json
     if [[ -n "$user" ]]; then
-        data_json=$(cat <<EOF
-{
-  "auth_type": "$auth_type",
-  "success": $success,
-  "user": "$user",
-  "project": "$project"
-}
-EOF
-)
+        data_json="{\"auth_type\":\"$auth_type\",\"success\":$success,\"user\":\"$user\",\"project\":\"$project\"}"
     else
-        data_json=$(cat <<EOF
-{
-  "auth_type": "$auth_type",
-  "success": $success
-}
-EOF
-)
+        data_json="{\"auth_type\":\"$auth_type\",\"success\":$success}"
     fi
 
     log_audit "AUTH_EVENT" "$data_json"
@@ -159,15 +108,7 @@ log_command_exec() {
     local exit_code="${4:-0}"
 
     local data_json
-    data_json=$(cat <<EOF
-{
-  "command": "$command",
-  "cwd": "$cwd",
-  "success": $success,
-  "exit_code": $exit_code
-}
-EOF
-)
+    data_json="{\"command\":\"$command\",\"cwd\":\"$cwd\",\"success\":$success,\"exit_code\":$exit_code}"
 
     log_audit "COMMAND_EXEC" "$data_json"
 }

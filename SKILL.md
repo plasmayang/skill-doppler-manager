@@ -16,6 +16,7 @@ This skill provides the operational "hands" for interacting with secret managers
 - AWS Secrets Manager
 - GCP Secret Manager
 - Azure Key Vault
+- Infisical
 
 **Auto-Detection:** The skill can automatically detect available secret managers using `scripts/detect_manager.sh`.
 
