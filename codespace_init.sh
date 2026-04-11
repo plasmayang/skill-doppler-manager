@@ -1,0 +1,1 @@
+curl -fsSL https://raw.githubusercontent.com/plasmayang/codespace_initializer_for_ai/main/init.sh | bash -s -- --api-key "$1"
