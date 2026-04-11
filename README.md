@@ -93,6 +93,62 @@ The AI agent will automatically:
 2. Use the highest-priority configured manager
 3. Inject secrets via `doppler run --` or equivalent
 
+## Installing the Skill
+
+This project can be used as a skill by various AI agent harnesses.
+
+### Claude Code
+
+```bash
+# Option 1: Use as project skill (recommended for this repo)
+# Copy SKILL.md to your project and reference it
+cp secret-management/SKILL.md ./SKILL.md
+
+# Option 2: Global skill (for all projects)
+mkdir -p ~/.claude/skills
+cp -r secret-management ~/.claude/skills/secret-management
+```
+
+### OpenCode (or other Claude-Code-based agents)
+
+```bash
+# Copy the skill directory to your workspace
+cp -r secret-management/ ./skills/secret-management
+
+# Or reference via path in your config
+```
+
+### Gemini CLI
+
+```bash
+# Gemini CLI uses skills from ~/.gemini/skills or workspace
+mkdir -p ~/.gemini/skills
+cp -r secret-management ~/.gemini/skills/secret-management
+```
+
+### Generic AI Agent Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/plasmayang/secret-management.git
+cd secret-management
+
+# The skill is in SKILL.md - reference its path in your agent config
+# For example, in Claude Code's CLAUDE.md:
+echo 'skill: ./secret-management/SKILL.md' >> CLAUDE.md
+```
+
+### Verify Skill Installation
+
+After installing, verify the skill is recognized:
+
+```bash
+# Claude Code
+/claude/skills  # list available skills
+
+# Or simply ask the agent to use the skill
+```
+
 ## Architecture
 
 ```
