@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-04-11
+
+### Added
+
+- **Claude Code Skill Native Integration**: `.claude/skills/doppler-skill/manifest.json`, tool definitions, and skill.md
+- **GitHub Milestones Roadmap**: `.github/milestones/roadmap.json` with v2.0-v2.2 release plan
+- **git-secrets CI Integration**: `scan-secrets` job in CI workflow to catch accidental secret commits
+- **Secret Lease/TTL Management**: `scripts/secret_lease.sh` with token bucket algorithm
+- **Secret Rotation Automation**: `scripts/secret_rotation.sh` for stale secret detection (> 90 days)
+- **Secret Access Request Workflow**: `scripts/access_request.sh` for HITL approval/rejection
+- **Rate Limiting Protection**: `scripts/rate_limit.sh` for audit logging DoS prevention
+- **OTLP Trace Export**: Enhanced `tracing.sh` with distributed tracing export capability
+- **Integration Test Suite**: `tests/integration/` with mock infrastructure and 5 test categories
+- **ADR-014 to ADR-020**: New architecture decisions for SOTA features
+- **GitHub Releases Workflow**: `.github/workflows/releases.yml` for automated releases
+
+### Security
+
+- git-secrets scanning on every PR and push
+- Rate limiting on all audit operations (sm_run: 60/min, sm_fetch: 120/min, sm_audit: 30/min)
+- Secret lease tracking prevents indefinite secret holding
+- Rotation detection forces periodic secret validation
+
+### Infrastructure
+
+- 4 new BATS tests added to core suite
+- Integration tests with mock Doppler/Vault/AWS CLI
+- Full OTLP export with span batching (100 spans or 5s flush)
+
 ## [1.2.0] - 2026-04-11
 
 ### Added

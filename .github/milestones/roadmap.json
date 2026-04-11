@@ -1,0 +1,19 @@
+{
+  "milestones": [
+    {
+      "title": "v2.0.0 - SOTA Foundation",
+      "due_on": "2026-04-30",
+      "description": "Claude Code native integration, enhanced CI/CD with git-secrets, secret lease/TTL management, secret rotation automation"
+    },
+    {
+      "title": "v2.1.0 - Claude Code Native",
+      "due_on": "2026-05-15",
+      "description": "Complete skill manifest with tool definitions, Claude Code integration tests, distributed tracing export"
+    },
+    {
+      "title": "v2.2.0 - Advanced Security",
+      "due_on": "2026-06-01",
+      "description": "Secret access approval workflow, rate limiting protection, multi-tenant namespace isolation"
+    }
+  ]
+}

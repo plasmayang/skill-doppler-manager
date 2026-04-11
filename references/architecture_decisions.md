@@ -215,3 +215,190 @@ fi
 ### Future Direction
 
 Consider adopting `bashcov` or `kcov` for more accurate coverage measurement if the project grows larger.
+
+---
+
+## ADR-014: Claude Code Skill Native Integration
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+This skill should be a first-class citizen in Claude Code's skill ecosystem, not just a markdown file dropped into a repository. We need proper tool definitions, skill manifest, and seamless registration.
+
+### Decision
+
+We implement the `.claude/skills/doppler-skill/` directory structure:
+
+1. **`manifest.json`**: Skill metadata (name, version, authors, tags, when-to-invoke)
+2. **`skill.md`**: Skill-specific behavioral guidance referencing SKILL.md
+3. **`tools/*.json`**: Tool definitions for each operation (sm_status, sm_run, sm_fetch, sm_audit, sm_emergency, sm_lease, sm_rotate, sm_request)
+4. **`CLAUDE.md`**: Top-level entry point at repository root
+
+### Consequences
+
+- **Positive**: Claude Code can properly invoke this skill with typed tools
+- **Positive**: Better discoverability and organization
+- **Negative**: Additional maintenance burden for manifest sync
+- **Negative**: Tool definitions must stay in sync with script capabilities
+
+---
+
+## ADR-015: Secret Lease/TTL Management
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+Secrets should not be held indefinitely. We need time-based lease management to:
+- Force periodic re-authentication
+- Enable secret rotation detection
+- Support short-lived credentials (Vault, AWS IAM roles)
+
+### Decision
+
+We implement `sm_lease <manager> <secret>` which:
+1. Fetches the secret with TTL metadata
+2. Tracks lease expiration in `~/.cache/doppler-manager/leases/`
+3. Returns `{value, expires_at, renewal_required}` JSON
+4. Emits warnings when renewal is required
+
+### Consequences
+
+- **Positive**: Supports short-lived credentials natively
+- **Positive**: Forces periodic rotation validation
+- **Negative**: Adds complexity to secret access pattern
+- **Negative**: Not all managers support TTL (fallback to sm_fetch)
+
+---
+
+## ADR-016: Secret Rotation Automation
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+Stale secrets (unused for > 90 days) are a security risk. We need automated detection and rotation triggering.
+
+### Decision
+
+We implement `sm_rotate <manager> <secret>`:
+1. Check last access timestamp from audit log
+2. If > 90 days, emit WARN and suggest rotation
+3. For managers with rotation APIs (Doppler, Vault), trigger rotation
+4. For others, provide copy-paste human command
+
+### Consequences
+
+- **Positive**: Proactive security hygiene
+- **Positive**: Reduces secret sprawl
+- **Negative**: Rotation may break dependent services
+- **Negative**: 90-day threshold is arbitrary
+
+---
+
+## ADR-017: Secret Access Request/Approval Workflow
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+For regulated environments, AI agents should not access secrets without human approval. We need a formal request-approve-reject workflow.
+
+### Decision
+
+We implement `sm_request`, `sm_approve`, `sm_reject`:
+1. `sm_request <secret> <reason>` creates JSON request in `~/.config/doppler-manager/requests/`
+2. `sm_list_requests` shows pending requests
+3. `sm_approve <id>` or `sm_reject <id>` updates status
+4. Audit log records all state transitions
+
+### Consequences
+
+- **Positive**: Compliant with security governance
+- **Positive**: Full audit trail of access decisions
+- **Negative**: Adds friction to secret access
+- **Negative**: No enforcement mechanism (AI could bypass)
+
+---
+
+## ADR-018: Rate Limiting for Audit Logging
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+Audit logging endpoints could be overwhelmed by a malicious or buggy script making thousands of requests per second.
+
+### Decision
+
+We implement token bucket rate limiting in `rate_limit.sh`:
+1. Each operation type has a bucket (sm_run: 60/min, sm_fetch: 120/min, sm_audit: 30/min)
+2. Buckets stored in `~/.cache/doppler-manager/rate_limits/`
+3. Exceeded limits return E429 with retry-after hint
+4. Buckets auto-refill; can be manually reset
+
+### Consequences
+
+- **Positive**: Prevents DoS on audit infrastructure
+- **Positive**: Graceful degradation under load
+- **Negative**: Legitimate bursty workloads may be throttled
+- **Negative**: Storage management for bucket files
+
+---
+
+## ADR-019: Distributed Tracing OTLP Export
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+Current tracing is in-memory only. For production deployments, traces should export to an OTLP-compatible backend (Jaeger, Zipkin, Honeycomb).
+
+### Decision
+
+We enhance `tracing.sh` to:
+1. Export spans to `${OTEL_ENDPOINT}/v1/traces` when OTEL_EXPORTER is set
+2. Use OTLP HTTP protocol with JSON encoding
+3. Batch spans for efficiency (flush on 100 spans or 5 second timeout)
+4. Include `service.name`, `service.version`, `deployment.environment` resource attributes
+
+### Consequences
+
+- **Positive**: Production-grade observability
+- **Positive**: Correlate with existing APM tools
+- **Negative**: Requires OTEL_ENDPOINT configuration
+- **Negative**: Python3 dependency for JSON processing in trace_end()
+
+---
+
+## ADR-020: CI/CD Secret Scanning with git-secrets
+
+**Date**: 2026-04-11
+**Status**: Accepted
+
+### Context
+
+Accidental secret commits could leak credentials. We need pre-merge scanning to catch this.
+
+### Decision
+
+We add `scan-secrets` job to CI:
+1. Install `git-secrets` via apt or direct download
+2. Register built-in patterns (AWS, GCP, Azure, generic)
+3. Run `git secrets --scan` on all files
+4. Fail CI if any pattern matches
+5. Additionally scan commit history with `git secrets --scan --cached`
+
+### Consequences
+
+- **Positive**: Catches accidental secret commits before merge
+- **Positive**: Low false positive rate with built-in patterns
+- **Negative**: git-secrets installation adds CI time
+- **Negative**: Some false positives require whitelisting

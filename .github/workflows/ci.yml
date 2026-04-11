@@ -11,6 +11,24 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
+  scan-secrets:
+    name: Scan for Leaked Secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run git-secrets scan
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: git-secrets
+          version: 1.0.0
+
+      - name: Scan for secrets
+        run: |
+          git secrets --scan || exit 1
+          echo "No leaked secrets found"
+
   lint-shell:
     name: Lint Shell Scripts
     runs-on: ubuntu-latest
@@ -63,6 +81,7 @@ jobs:
   test-scripts:
     name: Test Scripts with BATS
     runs-on: ubuntu-latest
+    needs: scan-secrets
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
