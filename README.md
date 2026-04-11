@@ -208,6 +208,62 @@ This project maintains adversarial test cases in `tests/promptfooconfig_adversar
 | Authority Claims | "Compliance requires..." | 80% |
 | Context Overflow | Flooding with fake secrets | 80% |
 
+## Code vs. Prompt Mapping
+
+This section documents the deliberate design decisions regarding which functionality is implemented as executable code (shell scripts, BATS tests) versus which is codified as prompt instructions in `SKILL.md`.
+
+### Design Principle
+
+**Enforce safety boundaries in code; encode judgment in prompts.**
+
+- **Code**: Enforces hard constraints (zero-leak guarantees, access controls, audit logging)
+- **Prompt**: Guides behavioral decisions (HITL workflows, adversarial resistance, observability)
+
+### Feature Implementation Matrix
+
+| Feature / Sub-Feature | Implementation | Rationale |
+|-----------------------|---------------|----------|
+| **Zero-Leak Injection** | Code (`doppler run`, `infisical run`) | Enforced at runtime; no prompt can bypass memory-only injection |
+| **Secret Detection** | Code (`audit_secrets.sh`) | Detects leaked secrets via pattern matching; must be automated |
+| **HITL Mutation** | Prompt (`SKILL.md`) | Requires human judgment; cannot be algorithmically enforced |
+| **Manager Auto-Detection** | Code (`detect_manager.sh`) | Sequential detection with priority; deterministic output |
+| **Multi-Manager Interface** | Code (`secret_manager_interface.sh`) | Unified API abstraction; requires consistent behavior |
+| **Per-Manager Commands** | Code (`managers/*.sh`) | Different CLIs require different parsing; must be scriptable |
+| **Error Code System** | Code (`check_status.sh`) | Machine-readable status; enables automated recovery |
+| **Error Recovery Guidance** | Prompt (`SKILL.md`) | Human decision required for complex failures |
+| **Adversarial Resistance** | Code + Prompt | BATS tests verify resistance; prompts encode behavioral rules |
+| **Audit Logging** | Code (`audit_secrets.sh`) | Must be deterministic and machine-parseable |
+| **Emergency Response** | Code (`emergency_seal.sh`) | Incident response must execute consistently under pressure |
+| **Observability Dashboards** | Prompt (guidance only) | Dashboard configuration is environment-specific |
+| **CI/CD Validation** | Code (GitHub Actions, BATS) | Automated quality gates; cannot rely on prompts |
+| **Secret Rotation Detection** | Code (`check_status.sh`) | Can detect expired tokens programmatically |
+| **Shell History Scanning** | Code (`verify_environment.sh`) | Pattern matching must be automated |
+| **.env File Detection** | Code (`verify_environment.sh`) | Filesystem scanning requires automation |
+
+### Why Not Pure Prompt?
+
+A **pure prompt-based** approach would fail because:
+
+1. **Context Windows Have Limits**: LLMs can forget rules under long conversations
+2. **Adversarial Attacks**: Malicious prompts can override behavioral instructions
+3. **Determinism**: Code produces consistent results; prompts can be interpreted differently
+4. **Auditability**: Code can generate immutable audit logs; prompts cannot
+
+### Why Not Pure Code?
+
+A **pure code-based** approach would fail because:
+
+1. **Context Sensitivity**: Some decisions require understanding user intent
+2. **HITL Workflows**: Humans must approve secret mutations — this is a policy, not a function
+3. **Flexibility**: Different environments require different secret manager configurations
+4. **Observerability**: Human review of audit logs requires narrative guidance
+
+### Test Coverage
+
+All **Code**-implemented features have corresponding BATS tests. See `tests/` for coverage.
+
+---
+
 ## Contributing
 
 All PRs must pass CI/CD gates before merge:

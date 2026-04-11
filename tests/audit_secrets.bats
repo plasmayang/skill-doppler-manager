@@ -40,7 +40,7 @@ SCRIPT="./scripts/audit_secrets.sh"
     [[ "$log_entry" == *"SECRET_ACCESS"* ]]
     [[ "$log_entry" == *"DATABASE_URL"* ]]
     [[ "$log_entry" == *"doppler_run"* ]]
-    [[ "$log_entry" == *'"success": true'* ]]
+    [[ "$log_entry" == *'"success":true'* ]]
 }
 
 @test "audit_secrets: access command with error logs failure" {
@@ -49,7 +49,7 @@ SCRIPT="./scripts/audit_secrets.sh"
 
     local log_entry
     log_entry=$(tail -n 1 "$TEST_AUDIT_DIR/audit.log")
-    [[ "$log_entry" == *'"success": false'* ]]
+    [[ "$log_entry" == *'"success":false'* ]]
     [[ "$log_entry" == *"Permission denied"* ]]
 }
 
@@ -73,7 +73,7 @@ SCRIPT="./scripts/audit_secrets.sh"
 
     local alert_entry
     alert_entry=$(tail -n 1 "$TEST_AUDIT_DIR/alerts.log")
-    [[ "$alert_entry" == *'"severity": "MEDIUM"'* ]]
+    [[ "$alert_entry" == *'"severity":"MEDIUM"'* ]]
 }
 
 @test "audit_secrets: auth command logs authentication event" {
@@ -86,7 +86,7 @@ SCRIPT="./scripts/audit_secrets.sh"
     auth_entry=$(tail -n 1 "$TEST_AUDIT_DIR/audit.log")
     [[ "$auth_entry" == *"AUTH_EVENT"* ]]
     [[ "$auth_entry" == *"service_token"* ]]
-    [[ "$auth_entry" == *'"success": true'* ]]
+    [[ "$auth_entry" == *'"success":true'* ]]
 }
 
 @test "audit_secrets: auth command without user/project logs minimal entry" {
@@ -97,7 +97,7 @@ SCRIPT="./scripts/audit_secrets.sh"
     auth_entry=$(tail -n 1 "$TEST_AUDIT_DIR/audit.log")
     [[ "$auth_entry" == *"AUTH_EVENT"* ]]
     [[ "$auth_entry" == *"interactive_login"* ]]
-    [[ "$auth_entry" == *'"success": false'* ]]
+    [[ "$auth_entry" == *'"success":false'* ]]
 }
 
 @test "audit_secrets: exec command logs command execution" {
@@ -111,7 +111,7 @@ SCRIPT="./scripts/audit_secrets.sh"
     [[ "$exec_entry" == *"COMMAND_EXEC"* ]]
     [[ "$exec_entry" == *"doppler run -- python deploy.py"* ]]
     [[ "$exec_entry" == *'/home/user/project'* ]]
-    [[ "$exec_entry" == *'"exit_code": 0'* ]]
+    [[ "$exec_entry" == *'"exit_code":0'* ]]
 }
 
 @test "audit_secrets: exec command logs failed execution" {
@@ -120,8 +120,8 @@ SCRIPT="./scripts/audit_secrets.sh"
 
     local exec_entry
     exec_entry=$(tail -n 1 "$TEST_AUDIT_DIR/audit.log")
-    [[ "$exec_entry" == *'"success": false'* ]]
-    [[ "$exec_entry" == *'"exit_code": 1'* ]]
+    [[ "$exec_entry" == *'"success":false'* ]]
+    [[ "$exec_entry" == *'"exit_code":1'* ]]
 }
 
 @test "audit_secrets: view command shows recent logs" {
@@ -169,8 +169,8 @@ SCRIPT="./scripts/audit_secrets.sh"
 }
 
 @test "audit_secrets: clean command removes old entries" {
-    # Create entries - we need to manually add old entries for testing
-    # Since clean_logs filters by timestamp, we test the function exists and runs
+    # Create entries first so there's a log file to clean
+    bash "$SCRIPT" access "SECRET1" "test" "true"
 
     run bash "$SCRIPT" clean 30
     [ "$status" -eq 0 ]
@@ -182,11 +182,18 @@ SCRIPT="./scripts/audit_secrets.sh"
     bash "$SCRIPT" auth "service_token" "true"
     bash "$SCRIPT" exec "ls" "/tmp" "true" "0"
 
-    # Verify each line is valid JSON
-    while IFS= read -r line; do
-        echo "$line" | python3 -c "import json,sys; json.load(sys.stdin)"
-    done < "$TEST_AUDIT_DIR/audit.log"
+    # Verify each line is valid JSON - use python to validate all at once
+    run python3 -c "
+import json
+with open('$TEST_AUDIT_DIR/audit.log') as f:
+    for i, line in enumerate(f):
+        line = line.strip()
+        if line:
+            json.loads(line)
+    print('All lines valid')
+"
     [ "$status" -eq 0 ]
+    [[ "$output" == *"All lines valid"* ]]
 }
 
 @test "audit_secrets: log entries contain required fields" {
@@ -200,8 +207,8 @@ SCRIPT="./scripts/audit_secrets.sh"
     [[ "$log_entry" == *'"timestamp":'* ]]
     [[ "$log_entry" == *'"type":'* ]]
     [[ "$log_entry" == *'"data":'* ]]
-    [[ "$log_entry" == *'"agent": "doppler-manager-skill"'* ]]
-    [[ "$log_entry" == *'"version": "1.0.0"'* ]]
+    [[ "$log_entry" == *'"agent":"doppler-manager-skill"'* ]]
+    [[ "$log_entry" == *'"version":"1.0.0"'* ]]
 }
 
 @test "audit_secrets: multiple sequential entries are appended" {
@@ -220,7 +227,7 @@ SCRIPT="./scripts/audit_secrets.sh"
 
     local log_entry
     log_entry=$(tail -n 1 "$TEST_AUDIT_DIR/audit.log")
-    [[ "$log_entry" == *'"secret_name": "UNKNOWN"'* ]]
+    [[ "$log_entry" == *'"secret_name":"UNKNOWN"'* ]]
 }
 
 @test "audit_secrets: handles special characters in secret names" {

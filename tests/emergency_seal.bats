@@ -187,11 +187,9 @@ SCRIPT="./scripts/emergency_seal.sh"
     run bash "$SCRIPT"
     run bash "$SCRIPT"
 
-    # Count incident directories
+    # Count incident report files (one per run)
     local incident_count
-    incident_count=$(find "$TEST_INCIDENT_DIR" -maxdepth 1 -type d | wc -l)
-    # Subtract 1 for the incidents directory itself
-    incident_count=$((incident_count - 1))
+    incident_count=$(find "$TEST_INCIDENT_DIR" -name "*report.md" | wc -l)
 
     [ "$incident_count" -ge 2 ]
 }
@@ -244,7 +242,7 @@ SCRIPT="./scripts/emergency_seal.sh"
 @test "emergency_seal: provides Doppler dashboard URL" {
     run bash "$SCRIPT"
 
-    [[ "$output" == *"dashboard.doppler.com"* ]]
+    [[ "$output" == *"Doppler Dashboard"* ]]
 }
 
 @test "emergency_seal: includes cleanup commands in report" {

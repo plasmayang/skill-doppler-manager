@@ -26,19 +26,20 @@ SCRIPT="./scripts/verify_environment.sh"
     # Create mock doppler that returns valid configuration
     cat << 'EOF' > "$MOCK_BIN_DIR/doppler"
 #!/bin/bash
+# IMPORTANT: More specific conditions MUST come before general ones
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
-elif [[ "$1" == "secrets" && "$2" == "--quiet" ]]; then
-    echo "SECRET1=value1"
-    echo "SECRET2=value2"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" && "$4" == "--plain" ]]; then
     echo "dp.st.abc123xyz"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "my-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
+elif [[ "$1" == "secrets" && "$2" == "--quiet" ]]; then
+    echo "SECRET1=value1"
+    echo "SECRET2=value2"
 fi
 exit 0
 EOF
@@ -87,11 +88,16 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" && "$4" == "--plain" ]]; then
     echo "dp.st.abc123xyz"
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
+    echo "test-project"
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
+    echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
+exit 0
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
 
@@ -105,11 +111,16 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" && "$4" == "--plain" ]]; then
     echo "dp.pt.abc123xyz"
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
+    echo "test-project"
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
+    echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
+exit 0
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
 
@@ -143,13 +154,14 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "error"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
+exit 0
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
 
@@ -183,12 +195,12 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -225,12 +237,12 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -248,8 +260,6 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
@@ -258,6 +268,8 @@ elif [[ "$1" == "secrets" && "$2" == "--quiet" ]]; then
     echo "SECRET1=value1"
     echo "SECRET2=value2"
     echo "SECRET3=value3"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -272,12 +284,12 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -327,12 +339,12 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -345,8 +357,8 @@ EOF
     chmod +x "$MOCK_BIN_DIR/curl"
 
     run bash "$SCRIPT"
-    # Check for ANSI color codes
-    [[ "$output" == *"\033["* ]]
+    # Check for ANSI color codes (look for ESC character which is byte 0x1b)
+    [[ "$output" == *$'\033['* ]]
 }
 
 @test "verify_environment: shows INFO/PASS/WARN/FAIL indicators" {
@@ -354,12 +366,12 @@ EOF
 #!/bin/bash
 if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
-elif [[ "$1" == "configure" ]]; then
-    exit 0
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
 elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
+elif [[ "$1" == "configure" ]]; then
+    exit 0
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"

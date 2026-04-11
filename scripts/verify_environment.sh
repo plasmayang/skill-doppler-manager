@@ -28,19 +28,29 @@ echo ""
 
 # 1. Check Doppler CLI installation
 info "Checking Doppler CLI installation..."
-if command -v doppler &> /dev/null; then
-    DOPPLER_VERSION=$(doppler --version 2>/dev/null | head -1 || echo "unknown")
-    success "Doppler CLI installed: $DOPPLER_VERSION"
-else
+if ! command -v doppler &> /dev/null; then
     error "Doppler CLI not found in PATH"
     ISSUES_FOUND=$((ISSUES_FOUND + 1))
+    echo ""
+    echo "=============================================="
+    echo "  Verification Summary"
+    echo "=============================================="
+    error "Found $ISSUES_FOUND issue(s) that should be addressed"
+    echo ""
+    echo "Run 'scripts/check_status.sh' for structured error codes."
+    echo "Refer to 'references/SOP.md' for resolution steps."
+    exit 1
 fi
+DOPPLER_VERSION=$(doppler --version 2>/dev/null | head -1 || echo "unknown")
+success "Doppler CLI installed: $DOPPLER_VERSION"
 echo ""
 
 # 2. Check authentication status
 info "Checking authentication status..."
+set +e  # Temporarily disable set -e to capture exit code
 AUTH_STATUS=$(doppler configure 2>&1)
 AUTH_EXIT=$?
+set -e  # Re-enable set -e
 
 if [[ $AUTH_EXIT -eq 0 ]]; then
     success "Authenticated with Doppler"

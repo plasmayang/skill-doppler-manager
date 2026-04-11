@@ -35,11 +35,8 @@ log_audit() {
     local event_data="$2"
     local log_file="${3:-$AUDIT_LOG_FILE}"
 
-    # Properly encode event_data as JSON to avoid injection and malformed JSON
-    local encoded_data
-    encoded_data=$(printf '%s' "$event_data" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || printf '"%s"' "$event_data")
-
-    printf '%s\n' "{\"id\":\"$(generate_id)\",\"timestamp\":\"$(timestamp)\",\"type\":\"$event_type\",\"data\":$encoded_data,\"agent\":\"doppler-manager-skill\",\"version\":\"1.0.0\"}" >> "$log_file"
+    # event_data is already properly formatted JSON - write directly
+    printf '%s\n' "{\"id\":\"$(generate_id)\",\"timestamp\":\"$(timestamp)\",\"type\":\"$event_type\",\"data\":$event_data,\"agent\":\"doppler-manager-skill\",\"version\":\"1.0.0\"}" >> "$log_file"
 }
 
 # Log a secret access event
@@ -175,6 +172,8 @@ clean_logs() {
         done < "$AUDIT_LOG_FILE"
         mv "$temp_file" "$AUDIT_LOG_FILE"
         echo "Cleaned logs older than $retention_days days"
+    else
+        echo "No audit log file to clean"
     fi
 }
 
@@ -199,7 +198,7 @@ case "${1:-}" in
         view_alerts
         ;;
     export)
-        export_logs "${2:-doppler-audit-export.jsonl}"
+        export_logs "${2:-}"
         ;;
     clean)
         clean_logs "${2:-30}"
