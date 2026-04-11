@@ -1,0 +1,33 @@
+{
+  "name": "secret-management-dev",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers-contrib/features/bats-core:1": {}
+  },
+  "postCreateCommand": "bash tests/run_tests.sh --install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "marketplace.visualstudio.com/items?itemName=tmplt.powershell"
+      ],
+      "settings": {
+        "shellcheck.enable": true,
+        "shellcheck.run": "onSave"
+      }
+    }
+  },
+  "portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "remoteEnv": {
+    "TEST_MODE": "all",
+    "CI": "false"
+  }
+}

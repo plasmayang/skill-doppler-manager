@@ -5,18 +5,17 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-source "$SCRIPT_DIR/tests/integration/run_tests.sh" 2>/dev/null || true
-
-echo "Testing incident response: leak detection logging..."
-
-# Setup audit directory
+# Project root is three levels up from test script
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+TEST_TMP_DIR="${TEST_TMP_DIR:-/tmp/secret-mgmt-integration-test}"
 export DOPPLER_AUDIT_DIR="$TEST_TMP_DIR/audit"
 mkdir -p "$DOPPLER_AUDIT_DIR"
 
+echo "Testing incident response: leak detection logging..."
+
 # Log a leak detection
-if [[ -f "$SCRIPT_DIR/scripts/audit_secrets.sh" ]]; then
-    bash "$SCRIPT_DIR/scripts/audit_secrets.sh" leak "PASTED_SECRET" "Integration test" "HIGH" 2>/dev/null || true
+if [[ -f "$PROJECT_ROOT/scripts/audit_secrets.sh" ]]; then
+    bash "$PROJECT_ROOT/scripts/audit_secrets.sh" leak "PASTED_SECRET" "Integration test" "HIGH" 2>/dev/null || true
 
     # Check alert log
     if [[ -f "$DOPPLER_AUDIT_DIR/alerts.log" ]]; then

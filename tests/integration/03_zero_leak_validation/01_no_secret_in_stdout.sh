@@ -5,36 +5,42 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-source "$SCRIPT_DIR/tests/integration/run_tests.sh" 2>/dev/null || true
+# Project root is three levels up from test script
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+TEST_TMP_DIR="${TEST_TMP_DIR:-/tmp/secret-mgmt-integration-test}"
+mkdir -p "$TEST_TMP_DIR"
 
 echo "Testing zero-leak: secrets not in stdout..."
 
-# Create a mock secret value
-MOCK_SECRET="sk_test_super_secret_value_12345"
+# Setup mock Doppler
+MOCK_DIR="/tmp/secret-mgmt-test-mock-$$"
+mkdir -p "$MOCK_DIR"
 
-# Run a command that accesses secrets
-create_mock_doppler
+cat << 'EOF' > "$MOCK_DIR/doppler"
+#!/bin/bash
+case "$1" in
+    --version) echo "Doppler 3.10.0 (mock)" ;;
+    configure) [[ -z "$2" ]] && exit 0; [[ "$2" == "get" ]] || exit 0
+        case "$3" in project) echo "test-project" ;; config) echo "dev" ;; token) echo "dp.st.mock" ;; esac; exit 0 ;;
+    secrets) [[ "$2" == "get" ]] && echo "mock_secret_value"; exit 0 ;;
+    run) shift 2; eval "$@" ;;
+    *) exit 1 ;;
+esac
+EOF
+chmod +x "$MOCK_DIR/doppler"
+export PATH="$MOCK_DIR:$PATH"
 
 # Capture all output
 all_output=$(doppler run -- bash -c 'echo "Test completed"' 2>&1 || true)
 
-# Check for secret patterns
-if echo "$all_output" | grep -q "$MOCK_SECRET"; then
+# Check for mock secret patterns
+if echo "$all_output" | grep -qi "mock_secret_value"; then
     echo "FAIL: Secret leaked into output"
     echo "$all_output"
+    rm -rf "$MOCK_DIR"
     exit 1
 fi
 
-# Check for common secret patterns
-for pattern in "sk_" "api_key" "secret" "password" "token"; do
-    if echo "$all_output" | grep -qi "$pattern"; then
-        # This might be a false positive if it's just the word "secret" in context
-        if ! echo "$all_output" | grep -qi "test.*completed"; then
-            echo "WARN: Potential secret pattern detected: $pattern"
-        fi
-    fi
-done
-
 echo "PASS: No secrets leaked to stdout"
+rm -rf "$MOCK_DIR"
 exit 0

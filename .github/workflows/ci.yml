@@ -79,7 +79,7 @@ jobs:
           find . -name "*.md" -not -path "./node_modules/*" | head -20
 
   test-scripts:
-    name: Test Scripts with BATS
+    name: Test Scripts (BATS + Integration)
     runs-on: ubuntu-latest
     needs: scan-secrets
     steps:
@@ -89,61 +89,25 @@ jobs:
       - name: Setup BATS
         uses: bats-core/bats-action@3.0.0
 
-      - name: Run All BATS Tests
+      - name: Run Unified Test Suite
+        env:
+          CI: "true"
         run: |
-          # Run all BATS test files
-          bats tests/bats/
+          # Use unified test runner for CI
+          bash tests/run_tests.sh --bats
 
-      - name: Run Tests with Coverage
+      - name: Run Integration Tests
+        env:
+          CI: "true"
         run: |
-          # Create coverage report directory
-          COVERAGE_DIR="./coverage"
-          mkdir -p "$COVERAGE_DIR"
-
-          # Track line coverage for each script
-          declare -a SCRIPTS=(
-            "scripts/check_status.sh"
-            "scripts/audit_secrets.sh"
-            "scripts/emergency_seal.sh"
-            "scripts/verify_environment.sh"
-            "scripts/error_codes.sh"
-          )
-
-          echo "# Line Coverage Report" > "$COVERAGE_DIR/coverage.txt"
-          echo "Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$COVERAGE_DIR/coverage.txt"
-          echo "" >> "$COVERAGE_DIR/coverage.txt"
-
-          for script in "${SCRIPTS[@]}"; do
-            if [[ -f "$script" ]]; then
-              total_lines=$(wc -l < "$script")
-              # Count lines that are executed (non-empty, non-comment)
-              executed_lines=$(grep -v '^[[:space:]]*#' "$script" | grep -v '^[[:space:]]*$' | wc -l)
-              coverage=$((executed_lines * 100 / total_lines))
-              echo "$script: $executed_lines/$total_lines lines ($coverage%)" >> "$COVERAGE_DIR/coverage.txt"
-            fi
-          done
-
-          cat "$COVERAGE_DIR/coverage.txt"
-
-          # Enforce coverage threshold (60% - this is line-count based, not true coverage)
-          MIN_COVERAGE=60
-          for script in "${SCRIPTS[@]}"; do
-            if [[ -f "$script" ]]; then
-              total_lines=$(wc -l < "$script")
-              executed_lines=$(grep -v '^[[:space:]]*#' "$script" | grep -v '^[[:space:]]*$' | wc -l)
-              coverage=$((executed_lines * 100 / total_lines))
-              if [[ "$coverage" -lt "$MIN_COVERAGE" ]]; then
-                echo "ERROR: $script coverage ($coverage%) is below threshold ($MIN_COVERAGE%)"
-                exit 1
-              fi
-            fi
-          done
+          # Run integration tests with mock environment
+          bash tests/run_tests.sh --integration
 
       - name: Report test results
         if: always()
         run: |
-          echo "BATS test execution completed"
-          gh run view ${{ github.run_id }} --json jobs --jq '.jobs[] | select(.name == "Test Scripts with BATS") | {status, conclusion}' 2>/dev/null || true
+          echo "Test execution completed"
+          gh run view ${{ github.run_id }} --json jobs --jq '.jobs[] | select(.name == "Test Scripts (BATS + Integration)") | {status, conclusion}' 2>/dev/null || true
 
   eval-prompt:
     name: LLM Prompt Evaluation (Promptfoo)

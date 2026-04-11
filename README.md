@@ -182,12 +182,57 @@ This project uses **LLM-as-a-Judge** for behavioral validation using GitHub's fr
 
 ### Running Tests Locally
 
+This project uses a unified test runner (`tests/run_tests.sh`) that supports both local development and CI environments.
+
+```bash
+# Run all tests (BATS + Integration)
+bash tests/run_tests.sh
+
+# Run BATS tests only (fast, no mock setup)
+bash tests/run_tests.sh --bats
+
+# Run integration tests only
+bash tests/run_tests.sh --integration
+
+# Quick smoke test
+bash tests/run_tests.sh --quick
+
+# List all available tests
+bash tests/run_tests.sh --list
+```
+
+#### Test Types
+
+| Test Suite | Location | Purpose | CI | Local |
+|------------|----------|---------|-----|-------|
+| BATS | `tests/bats/` | Unit tests for individual scripts | ✅ | ✅ |
+| Integration | `tests/integration/` | End-to-end workflow tests with mocks | ✅ | ✅ |
+| LLM Judge | `tests/promptfooconfig*.yaml` | Behavioral/adversarial testing | ✅ | Manual |
+
+#### Local Development Workflow
+
+```bash
+# 1. Make changes to scripts
+vim scripts/check_status.sh
+
+# 2. Run quick test to verify basic functionality
+bash tests/run_tests.sh --quick
+
+# 3. Run BATS tests for fast feedback
+bash tests/run_tests.sh --bats
+
+# 4. Run integration tests before committing
+bash tests/run_tests.sh --integration
+
+# 5. Verify all tests pass before pushing
+bash tests/run_tests.sh
+```
+
+#### Shell Lint & Markdown
+
 ```bash
 # Shell lint
 shellcheck scripts/**/*.sh
-
-# Unit tests
-bats tests/
 
 # Markdown lint
 npx markdownlint "**/*.md"

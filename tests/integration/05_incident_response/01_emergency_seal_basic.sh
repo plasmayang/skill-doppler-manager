@@ -5,18 +5,17 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-source "$SCRIPT_DIR/tests/integration/run_tests.sh" 2>/dev/null || true
-
-echo "Testing incident response: emergency seal..."
-
-# Setup incident directory
+# Project root is three levels up from test script
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+TEST_TMP_DIR="${TEST_TMP_DIR:-/tmp/secret-mgmt-integration-test}"
 export DOPPLER_AUDIT_DIR="$TEST_TMP_DIR/audit"
 mkdir -p "$DOPPLER_AUDIT_DIR"
 
+echo "Testing incident response: emergency seal..."
+
 # Run emergency seal
-if [[ -f "$SCRIPT_DIR/scripts/emergency_seal.sh" ]]; then
-    output=$(bash "$SCRIPT_DIR/scripts/emergency_seal.sh" 2>&1 || true)
+if [[ -f "$PROJECT_ROOT/scripts/emergency_seal.sh" ]]; then
+    output=$(bash "$PROJECT_ROOT/scripts/emergency_seal.sh" 2>&1 || true)
 
     # Check for incident ID
     if ! echo "$output" | grep -q "INC-"; then
