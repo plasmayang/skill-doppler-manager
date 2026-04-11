@@ -92,7 +92,7 @@ jobs:
       - name: Run All BATS Tests
         run: |
           # Run all BATS test files
-          bats tests/
+          bats tests/bats/
 
       - name: Run Tests with Coverage
         run: |
