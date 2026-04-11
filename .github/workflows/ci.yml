@@ -70,8 +70,55 @@ jobs:
       - name: Setup BATS
         uses: bats-core/bats-action@3.0.0
 
-      - name: Run Tests
-        run: bats tests/check_status.bats
+      - name: Run All BATS Tests
+        run: |
+          # Run all BATS test files
+          bats tests/
+
+      - name: Run Tests with Coverage
+        run: |
+          # Create coverage report directory
+          COVERAGE_DIR="./coverage"
+          mkdir -p "$COVERAGE_DIR"
+
+          # Track line coverage for each script
+          declare -a SCRIPTS=(
+            "scripts/check_status.sh"
+            "scripts/audit_secrets.sh"
+            "scripts/emergency_seal.sh"
+            "scripts/verify_environment.sh"
+            "scripts/error_codes.sh"
+          )
+
+          echo "# Line Coverage Report" > "$COVERAGE_DIR/coverage.txt"
+          echo "Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$COVERAGE_DIR/coverage.txt"
+          echo "" >> "$COVERAGE_DIR/coverage.txt"
+
+          for script in "${SCRIPTS[@]}"; do
+            if [[ -f "$script" ]]; then
+              total_lines=$(wc -l < "$script")
+              # Count lines that are executed (non-empty, non-comment)
+              executed_lines=$(grep -v '^[[:space:]]*#' "$script" | grep -v '^[[:space:]]*$' | wc -l)
+              coverage=$((executed_lines * 100 / total_lines))
+              echo "$script: $executed_lines/$total_lines lines ($coverage%)" >> "$COVERAGE_DIR/coverage.txt"
+            fi
+          done
+
+          cat "$COVERAGE_DIR/coverage.txt"
+
+          # Enforce coverage threshold (80%)
+          MIN_COVERAGE=80
+          for script in "${SCRIPTS[@]}"; do
+            if [[ -f "$script" ]]; then
+              total_lines=$(wc -l < "$script")
+              executed_lines=$(grep -v '^[[:space:]]*#' "$script" | grep -v '^[[:space:]]*$' | wc -l)
+              coverage=$((executed_lines * 100 / total_lines))
+              if [[ "$coverage" -lt "$MIN_COVERAGE" ]]; then
+                echo "ERROR: $script coverage ($coverage%) is below threshold ($MIN_COVERAGE%)"
+                exit 1
+              fi
+            fi
+          done
 
       - name: Report test results
         if: always()

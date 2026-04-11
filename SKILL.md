@@ -1,13 +1,23 @@
 ---
 name: doppler-manager
-description: Configure and manage Doppler CLI for secure, zero-leak secret injection. Use this skill when executing applications that require environment variables, or when assisting the user in setting up secret management.
+description: Configure and manage secret managers (Doppler, Vault, AWS, etc.) for secure, zero-leak secret injection. Use this skill when executing applications that require environment variables, or when assisting the user in setting up secret management.
 ---
 
-# Doppler Manager
+# Doppler Manager (Multi-Secret-Manager Support)
 
 ## Overview
 
-This skill provides the operational "hands" for interacting with the Doppler CLI. Your primary objective is to facilitate secure, zero-leak secret injection for applications and scripts, acting as an orchestrator between the user's secret store and the execution environment.
+This skill provides the operational "hands" for interacting with secret managers. Your primary objective is to facilitate secure, zero-leak secret injection for applications and scripts, acting as an orchestrator between the user's secret store and the execution environment.
+
+**Supported Secret Managers:**
+
+- Doppler CLI (primary)
+- HashiCorp Vault
+- AWS Secrets Manager
+- GCP Secret Manager
+- Azure Key Vault
+
+**Auto-Detection:** The skill can automatically detect available secret managers using `scripts/detect_manager.sh`.
 
 ## 🛑 The Prime Directive (Zero-Leak)
 
@@ -17,7 +27,7 @@ Under NO CIRCUMSTANCES should you:
 2. **Write** secrets to local `.env` files or any file on disk.
 3. **Execute** commands that expose secrets in terminal history (e.g., `echo $SECRET`).
 
-Your only method for utilizing secrets is memory-only injection via the Doppler CLI.
+Your only method for utilizing secrets is memory-only injection via the active secret manager (`doppler run`, `vault run`, etc.).
 
 ## Quick Start
 
@@ -188,11 +198,66 @@ When `doppler run` times out or fails transiently:
 
 Before any secret operation, verify:
 
-- [ ] Doppler CLI is from official source (not a fork)
-- [ ] Token has minimal required permissions (principle of least privilege)
+- [ ] Secret manager CLI is from official source (not a fork)
+- [ ] Token/credentials have minimal required permissions (principle of least privilege)
 - [ ] No `.env` files exist in the project (legacy secret contamination)
 - [ ] Shell history does not contain secrets (`history -c` if suspected)
 - [ ] No hardcoded secrets in scripts or code
+
+## Multi-Secret-Manager Support
+
+When multiple secret managers are available, the skill auto-detects and uses the best one:
+
+### Auto-Detection
+
+Run `scripts/detect_manager.sh` to see available managers:
+
+```bash
+# Output shows detected managers with priorities:
+# doppler        [Priority: 100] Doppler CLI installed and authenticated
+# vault          [Priority: 80]  Vault CLI installed and reachable
+```
+
+### Manager-Specific Commands
+
+Each manager has equivalent operations:
+
+| Operation | Doppler | Vault | AWS |
+| --- | --- | --- | --- |
+| Status | `doppler configure` | `vault status` | `aws secretsmanager list-secrets` |
+| Run | `doppler run -- <cmd>` | `vault kv get` + env | `aws secretsmanager get-secret-value` |
+| Set (HITL) | `doppler secrets set` | `vault kv put` | `aws secretsmanager put-secret-value` |
+
+### Manager Selection Rules
+
+1. **Priority**: Higher priority manager is auto-selected if multiple are available
+2. **Doppler is primary**: If Doppler is configured, prefer it for consistency
+3. **Explicit override**: User can explicitly request a specific manager
+4. **Fallback**: If primary fails, offer alternatives
+
+### Interface Functions (Advanced)
+
+For programmatic access, use the manager interface:
+
+```bash
+# Load a specific manager
+source scripts/secret_manager_interface.sh
+sm_load doppler
+
+# Use standard interface (same for all managers)
+sm_status              # Returns JSON status
+sm_run <cmd>          # Run with secrets injected
+sm_get <secret_name>  # Get single secret (memory-only)
+sm_set <secret_name>  # Output HITL command template
+```
+
+### Extended Error Codes
+
+| Code | Status | Meaning | Recovery |
+| --- | --- | --- | --- |
+| E100 | ERROR | Manager not supported | Use `detect_manager.sh` to see available |
+| E101 | ERROR | Manager not configured | Run manager-specific setup |
+| E102 | ERROR | Manager-specific error | Check manager documentation |
 
 ## Emergency Response
 

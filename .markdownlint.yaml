@@ -12,3 +12,9 @@ MD024: false
 
 # Allow bare URLs: Sometimes necessary in references or scripts docs.
 MD034: false
+
+# References-specific relaxations
+MD029: false
+MD031: false
+MD040: false
+MD060: false
