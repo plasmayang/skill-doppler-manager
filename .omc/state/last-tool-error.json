@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"npx markdownlint SKILL.md 2>&1\",\"description\":\"Check markdown lint\"}",
-  "error": "Exit code 1\nSKILL.md:234 error MD032/blanks-around-lists Lists should be surrounded by blank lines [Context: \"- **Full injection**: Doppler,...\"]",
-  "timestamp": "2026-04-11T04:26:54.958Z",
+  "tool_input_preview": "{\"command\":\"/oh-my-claudecode:cancel 2>&1 || /oh-my-claudecode:cancel --force 2>&1\"}",
+  "error": "Exit code 127\n/bin/bash: line 1: /oh-my-claudecode:cancel: No such file or directory\n/bin/bash: line 1: /oh-my-claudecode:cancel: No such file or directory",
+  "timestamp": "2026-04-11T05:19:05.358Z",
   "retry_count": 1
 }

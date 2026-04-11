@@ -85,6 +85,18 @@
   },
   "hotPaths": [
     {
+      "path": "tests/verify_environment.bats",
+      "accessCount": 30,
+      "lastAccessed": 1775883233335,
+      "type": "file"
+    },
+    {
+      "path": "tests/audit_secrets.bats",
+      "accessCount": 30,
+      "lastAccessed": 1775884150746,
+      "type": "file"
+    },
+    {
       "path": "",
       "accessCount": 27,
       "lastAccessed": 1775881139151,
@@ -92,32 +104,38 @@
     },
     {
       "path": "scripts/audit_secrets.sh",
-      "accessCount": 18,
-      "lastAccessed": 1775881336778,
+      "accessCount": 27,
+      "lastAccessed": 1775884092871,
       "type": "file"
     },
     {
       "path": "SKILL.md",
-      "accessCount": 15,
-      "lastAccessed": 1775881620893,
+      "accessCount": 16,
+      "lastAccessed": 1775882283162,
       "type": "file"
     },
     {
       "path": "README.md",
-      "accessCount": 12,
-      "lastAccessed": 1775880883064,
-      "type": "file"
-    },
-    {
-      "path": "tests/verify_environment.bats",
-      "accessCount": 12,
-      "lastAccessed": 1775881075418,
+      "accessCount": 16,
+      "lastAccessed": 1775884420919,
       "type": "file"
     },
     {
       "path": "scripts/detect_manager.sh",
       "accessCount": 12,
       "lastAccessed": 1775881075533,
+      "type": "file"
+    },
+    {
+      "path": "scripts/verify_environment.sh",
+      "accessCount": 10,
+      "lastAccessed": 1775883106957,
+      "type": "file"
+    },
+    {
+      "path": "tests/emergency_seal.bats",
+      "accessCount": 9,
+      "lastAccessed": 1775884276920,
       "type": "file"
     },
     {
@@ -163,21 +181,9 @@
       "type": "file"
     },
     {
-      "path": "scripts/verify_environment.sh",
-      "accessCount": 4,
-      "lastAccessed": 1775881062990,
-      "type": "file"
-    },
-    {
       "path": "scripts/emergency_seal.sh",
       "accessCount": 4,
       "lastAccessed": 1775881063313,
-      "type": "file"
-    },
-    {
-      "path": "tests/audit_secrets.bats",
-      "accessCount": 4,
-      "lastAccessed": 1775881075235,
       "type": "file"
     },
     {
@@ -220,12 +226,6 @@
       "path": "scripts/error_codes.sh",
       "accessCount": 3,
       "lastAccessed": 1775881075180,
-      "type": "file"
-    },
-    {
-      "path": "tests/emergency_seal.bats",
-      "accessCount": 3,
-      "lastAccessed": 1775881075597,
       "type": "file"
     },
     {
