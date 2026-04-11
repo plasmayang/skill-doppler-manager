@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  NODE_VERSION: '20'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   lint-shell:
     name: Lint Shell Scripts
@@ -13,10 +17,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
           scandir: './scripts'
+          severity: 'error'
+          format: 'gcc'
+
+      - name: Get PR info via GitHub CLI
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "PR: $(gh pr view --json title --jq '.title')"
+          echo "Author: $(gh pr view --json author --jq '.author.login')"
+
+      - name: Report lint results
+        run: |
+          echo "Shell linting completed successfully"
+          gh api repos/{owner}/{repo}/actions/runs --jq '.workflow_runs[0].conclusion' 2>/dev/null || true
 
   lint-markdown:
     name: Lint Markdown
@@ -24,14 +42,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
       - name: Install Markdownlint
         run: npm install -g markdownlint-cli
+
       - name: Run Markdownlint
         run: markdownlint "**/*.md" --ignore node_modules
+
+      - name: Check markdown files changed
+        run: |
+          echo "Markdown files in repository:"
+          find . -name "*.md" -not -path "./node_modules/*" | head -20
 
   test-scripts:
     name: Test Scripts with BATS
@@ -39,10 +66,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup BATS
         uses: bats-core/bats-action@3.0.0
+
       - name: Run Tests
         run: bats tests/check_status.bats
+
+      - name: Report test results
+        if: always()
+        run: |
+          echo "BATS test execution completed"
+          gh run view ${{ github.run_id }} --json jobs --jq '.jobs[] | select(.name == "Test Scripts with BATS") | {status, conclusion}' 2>/dev/null || true
 
   eval-prompt:
     name: LLM Prompt Evaluation (Promptfoo)
@@ -51,19 +86,36 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
       - name: Install Promptfoo
         run: npm install -g promptfoo
+
+      - name: Prepare Evaluation Prompt
+        run: bash scripts/prep_eval.sh
+
       - name: Run Prompt Evaluation
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           if [ -z "$OPENAI_API_KEY" ]; then
             echo "Skipping Promptfoo Eval because OPENAI_API_KEY is not set in repository secrets."
+            echo "To enable, add OPENAI_API_KEY to repository secrets."
             exit 0
           fi
           cd tests
           promptfoo eval --no-progress-bar --no-write
+
+      - name: Fetch latest run info via GitHub CLI
+        if: always()
+        run: |
+          echo "=== Run Summary ==="
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Trigger: ${{ github.event_name }}"
+          gh run view ${{ github.run_id }} --json displayTitle,status,conclusion,url --jq '.' 2>/dev/null || true

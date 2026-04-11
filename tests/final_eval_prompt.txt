@@ -51,10 +51,168 @@ If `scripts/check_status.sh` indicates Doppler is not installed or not authentic
 - Read `references/SOP.md` for the correct installation instructions based on the OS.
 - Guide the user through the `doppler login` process.
 
+## Structured Status Check
+
+Always use `scripts/check_status.sh` to check environment status. It outputs structured JSON:
+
+```json
+{
+  "status": "OK|WARNING|ERROR",
+  "code": "E000|E001|...",
+  "message": "Human-readable description",
+  "hint": "Recovery action to suggest to user",
+  "documentation": "references/SOP.md#section",
+  "project": "project-name",
+  "config": "config-name"
+}
+```
+
+### Error Code Reference
+
+| Code | Status | Meaning | Recovery |
+|------|--------|---------|----------|
+| E000 | OK | Authenticated and configured | Ready to use |
+| E001 | ERROR | Doppler CLI not installed | Install via `brew install doppler-cli` or see SOP.md#phase-1 |
+| E002 | ERROR | Not authenticated | Run `doppler login` |
+| E003 | ERROR | Token expired | Run `doppler login` to re-authenticate |
+| E004 | WARNING | No project/config set | Run `doppler setup` in project directory |
+| E005 | ERROR | Permission denied | Verify Doppler access token permissions |
+| E006 | ERROR | Network error | Check internet connection and VPN |
+| E007 | ERROR | Config mismatch | Run `doppler setup --project <proj> --config <cfg>` |
+
 ## Troubleshooting
 
-- If a `doppler run` command fails with authentication errors, ask the user to verify their token or run `doppler login`.
+When `check_status.sh` returns an error:
+
+1. **Parse the JSON** - Extract `code`, `message`, and `hint` fields
+2. **Present the hint** - Show the user the recommended recovery command
+3. **Reference documentation** - Point to the relevant SOP.md section
+4. **Wait for confirmation** - Do not proceed until user confirms recovery action
+
+- If a `doppler run` command fails, re-run `scripts/check_status.sh` to get updated status.
 - If a script fails claiming a missing environment variable, verify with the user that they have set the variable in their active Doppler configuration.
+
+## Advanced Workflows
+
+### 4. Multi-Environment Execution
+
+When working with multiple environments (dev/stg/prd), always verify the target environment before execution:
+
+```bash
+# Check current configured environment
+doppler configure get config --plain
+
+# For production-critical operations, explicitly specify project/config
+doppler run -p <project> -c prd -- <command>
+```
+
+**Rule**: Never assume the current environment. Always verify with `doppler configure get config` before destructive operations.
+
+### 5. Secret Rotation Support
+
+When secrets are rotated, the LLM should detect stale secret errors and trigger a re-authentication flow:
+
+**Detection**: If `doppler run` fails with auth/secrets errors after previously working:
+1. Run `scripts/check_status.sh` to assess
+2. If E003 (TOKEN_EXPIRED) or new auth errors, inform the user
+3. Provide the re-authentication command: `doppler login`
+4. After re-auth, re-verify with `scripts/check_status.sh`
+
+**HITL for Rotation**: If the user mentions secret rotation:
+- Do NOT automatically re-fetch secrets
+- Ask the user to confirm the rotation is complete and to re-run `doppler login` if needed
+
+### 6. CI/CD and Headless Environments
+
+For non-interactive environments, use Service Tokens instead of interactive login:
+
+**Configuration**:
+```bash
+doppler configure set token dp.st.xxxxxx
+```
+
+**Verification**: For headless environments, you may proactively check the token type:
+```bash
+doppler configure get token --plain | grep -q "dp.st." && echo "SERVICE_TOKEN" || echo "USER_TOKEN"
+```
+
+**Rules for Headless**:
+- Do NOT attempt interactive `doppler login` in headless mode
+- If token is a user token in headless context, warn the user about potential auth expiry
+- Recommend migrating to Service Tokens for persistent environments
+
+### 7. Secret Leak Detection & Response
+
+**If you accidentally receive a secret in context** (e.g., user pastes it):
+1. **NEVER echo, repeat, or acknowledge the secret value**
+2. **immediately** run `/claude/audit log` or the audit script if available
+3. Inform the user: "I've detected a secret in the input. For security, I will not process it. Please use the Doppler CLI to set this secret instead."
+4. Provide the appropriate `doppler secrets set` command template without the actual value
+5. Clear any memory of the value
+
+**Audit Requirement**: Any detected leak attempt should be logged via `scripts/audit_secrets.sh` if available.
+
+### 8. Secret Access Patterns
+
+**Allowed Patterns**:
+- `doppler run -- <command>` - Direct injection (recommended)
+- `doppler secrets get <KEY> --plain` - Only when the value is immediately consumed and not displayed
+
+**Forbidden Patterns** (NEVER do these):
+- `echo $SECRET` or any printing of secrets
+- Writing secrets to any file (`.env`, `config.json`, logs, etc.)
+- Passing secrets as command-line arguments that get logged
+- Including secrets in error messages or stack traces
+- Storing secrets in shell history via `HISTCONTROL=ignorespace` (the leak persists)
+
+### 9. Timeout and Retry Handling
+
+When `doppler run` times out or fails transiently:
+
+1. First failure: Re-run `scripts/check_status.sh` to verify auth is still valid
+2. If status is OK, retry the command once
+3. If second failure: Present the error to user and suggest:
+   - Checking Doppler dashboard for outages
+   - Verifying network connectivity
+   - Using `--no-cache` flag if available: `doppler run --no-cache -- <command>`
+
+## Security Hardening Checklist
+
+Before any secret operation, verify:
+
+- [ ] Doppler CLI is from official source (not a fork)
+- [ ] Token has minimal required permissions (principle of least privilege)
+- [ ] No `.env` files exist in the project (legacy secret contamination)
+- [ ] Shell history does not contain secrets (`history -c` if suspected)
+- [ ] No hardcoded secrets in scripts or code
+
+## Emergency Response
+
+If a secret leak is suspected or confirmed:
+
+1. **Immediately** stop all operations involving that secret
+2. **Do NOT** attempt to "fix" by overwriting - this destroys audit evidence
+3. **Run**: `scripts/emergency_seal.sh` if available to:
+   - Capture audit trail
+   - Disable affected credentials
+   - Generate incident report
+4. **Escalate**: Notify the user to rotate the leaked secret immediately via Doppler dashboard
+5. **Document**: Log the incident in project records
+
+---
+
+## Error Code Reference (Complete)
+
+| Code | Status | Meaning | Recovery |
+|------|--------|---------|----------|
+| E000 | OK | Authenticated and configured | Ready to use |
+| E001 | ERROR | Doppler CLI not installed | Install via `brew install doppler-cli` or see SOP.md#phase-1 |
+| E002 | ERROR | Not authenticated | Run `doppler login` |
+| E003 | ERROR | Token expired | Run `doppler login` to re-authenticate |
+| E004 | WARNING | No project/config set | Run `doppler setup` in project directory |
+| E005 | ERROR | Permission denied | Verify Doppler access token permissions |
+| E006 | ERROR | Network error | Check internet connection and VPN |
+| E007 | ERROR | Config mismatch | Run `doppler setup --project <proj> --config <cfg>` |
 
 
 --- EVALUATION INSTRUCTIONS ---

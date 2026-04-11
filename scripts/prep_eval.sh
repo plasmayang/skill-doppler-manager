@@ -1,7 +1,7 @@
 #!/bin/bash
 # prep_eval.sh: Merge SKILL.md with test instructions for Promptfoo
 
-ROOT_DIR=$(dirname $(dirname $(realpath $0)))
+ROOT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 TEST_DIR="$ROOT_DIR/tests"
 
 # Combine SKILL.md and test instructions
