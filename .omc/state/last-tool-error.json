@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"bats tests/audit_secrets.bats 2>&1\",\"description\":\"Run audit_secrets BATS tests\"}",
-  "error": "Exit code 1\n1..20\nok 1 audit_secrets: shows usage when no arguments provided\nnot ok 2 audit_secrets: access command logs secret access event\n# (in test file tests/audit_secrets.bats, line 43)\n#   `[[ \"$log_entry\" == *'\"success\": true'* ]]' failed\nnot ok 3 audit_secrets: access command with error logs failure\n# (in test file tests/audit_secrets.bats, line 52)\n#   `[[ \"$log_entry\" == *'\"success\": false'* ]]' failed\nok 4 audit_secrets: leak command logs to alert log\nnot ok 5 audit_secrets: leak com...",
-  "timestamp": "2026-04-11T03:48:47.964Z",
+  "tool_input_preview": "{\"command\":\"npx markdownlint SKILL.md 2>&1\",\"description\":\"Check markdown lint\"}",
+  "error": "Exit code 1\nSKILL.md:234 error MD032/blanks-around-lists Lists should be surrounded by blank lines [Context: \"- **Full injection**: Doppler,...\"]",
+  "timestamp": "2026-04-11T04:26:54.958Z",
   "retry_count": 1
 }

@@ -221,13 +221,19 @@ Run `scripts/detect_manager.sh` to see available managers:
 
 ### Manager-Specific Commands
 
-Each manager has equivalent operations:
+Each manager has equivalent operations. **Note:** Only Doppler and Infisical support true secret injection via `sm_run`. Vault, AWS, GCP, and Azure retrieve individual secrets and require per-secret access patterns.
 
-| Operation | Doppler | Vault | AWS |
-| --- | --- | --- | --- |
-| Status | `doppler configure` | `vault status` | `aws secretsmanager list-secrets` |
-| Run | `doppler run -- <cmd>` | `vault kv get` + env | `aws secretsmanager get-secret-value` |
-| Set (HITL) | `doppler secrets set` | `vault kv put` | `aws secretsmanager put-secret-value` |
+| Operation | Doppler | Infisical | Vault | AWS/GCP/Azure |
+| --- | --- | --- | --- | --- |
+| Status | `doppler configure` | `infisical status` | `vault status` | Manager-specific |
+| **Run (Injection)** | `doppler run -- <cmd>` | `infisical run -- <cmd>` | Per-secret fetch | Per-secret fetch |
+| Get Secret | `doppler secrets get` | `infisical secrets get` | `vault kv get` | Manager-specific |
+| Set (HITL) | `doppler secrets set` | `infisical secrets set` | `vault kv put` | Manager-specific |
+
+**Injection Support:**
+
+- **Full injection**: Doppler, Infisical - these support `sm_run` which injects all secrets as environment variables
+- **Per-secret only**: Vault, AWS, GCP, Azure - these require `sm_get <secret_name>` for each needed secret
 
 ### Manager Selection Rules
 

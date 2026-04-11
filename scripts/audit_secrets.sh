@@ -35,7 +35,11 @@ log_audit() {
     local event_data="$2"
     local log_file="${3:-$AUDIT_LOG_FILE}"
 
-    printf '%s\n' "{\"id\":\"$(generate_id)\",\"timestamp\":\"$(timestamp)\",\"type\":\"$event_type\",\"data\":$event_data,\"agent\":\"doppler-manager-skill\",\"version\":\"1.0.0\"}" >> "$log_file"
+    # Properly encode event_data as JSON to avoid injection and malformed JSON
+    local encoded_data
+    encoded_data=$(printf '%s' "$event_data" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || printf '"%s"' "$event_data")
+
+    printf '%s\n' "{\"id\":\"$(generate_id)\",\"timestamp\":\"$(timestamp)\",\"type\":\"$event_type\",\"data\":$encoded_data,\"agent\":\"doppler-manager-skill\",\"version\":\"1.0.0\"}" >> "$log_file"
 }
 
 # Log a secret access event
@@ -137,7 +141,7 @@ view_alerts() {
 
 # Export logs for review
 export_logs() {
-    local output_file="${1:-doppler-audit-export.jsonl}"
+    local output_file="${1:-${AUDIT_LOG_DIR}/doppler-audit-export.jsonl}"
 
     if [[ -f "$AUDIT_LOG_FILE" ]]; then
         cp "$AUDIT_LOG_FILE" "$output_file"

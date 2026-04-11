@@ -30,14 +30,14 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "secrets" ]]; then
+elif [[ "$1" == "secrets" && "$2" == "--quiet" ]]; then
     echo "SECRET1=value1"
     echo "SECRET2=value2"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" && "$4" == "--plain" ]]; then
     echo "dp.st.abc123xyz"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "my-project"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
 fi
 exit 0
@@ -89,7 +89,7 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" && "$4" == "--plain" ]]; then
     echo "dp.st.abc123xyz"
 fi
 EOF
@@ -107,7 +107,7 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "token" && "$4" == "--plain" ]]; then
     echo "dp.pt.abc123xyz"
 fi
 EOF
@@ -126,7 +126,7 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$4" == "--plain" ]]; then
     echo ""
 fi
 EOF
@@ -145,9 +145,9 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "error"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
 fi
 EOF
@@ -185,9 +185,9 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
 fi
 EOF
@@ -227,6 +227,10 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
+    echo "test-project"
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
+    echo "dev"
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -246,11 +250,11 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
-elif [[ "$1" == "secrets" ]]; then
+elif [[ "$1" == "secrets" && "$2" == "--quiet" ]]; then
     echo "SECRET1=value1"
     echo "SECRET2=value2"
     echo "SECRET3=value3"
@@ -270,6 +274,10 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
+    echo "test-project"
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
+    echo "dev"
 fi
 EOF
     chmod +x "$MOCK_BIN_DIR/doppler"
@@ -321,9 +329,9 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
 fi
 EOF
@@ -348,9 +356,9 @@ if [[ "$1" == "--version" ]]; then
     echo "Doppler 3.10.0"
 elif [[ "$1" == "configure" ]]; then
     exit 0
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "project" && "$4" == "--plain" ]]; then
     echo "test-project"
-elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" ]]; then
+elif [[ "$1" == "configure" && "$2" == "get" && "$3" == "config" && "$4" == "--plain" ]]; then
     echo "dev"
 fi
 EOF

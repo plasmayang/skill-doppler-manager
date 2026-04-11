@@ -8,3 +8,10 @@ dist/
 # Gemini CLI / AI specific
 .gemini/
 *.skill
+
+# Audit logs and incident reports
+*.jsonl
+incidents/
+audit.log
+alerts.log
+doppler-audit-export.jsonl

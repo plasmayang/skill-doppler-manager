@@ -86,32 +86,152 @@
   "hotPaths": [
     {
       "path": "",
-      "accessCount": 11,
-      "lastAccessed": 1775878935376,
+      "accessCount": 27,
+      "lastAccessed": 1775881139151,
       "type": "directory"
     },
     {
       "path": "scripts/audit_secrets.sh",
-      "accessCount": 10,
-      "lastAccessed": 1775879308409,
-      "type": "file"
-    },
-    {
-      "path": "README.md",
-      "accessCount": 9,
-      "lastAccessed": 1775879903328,
-      "type": "file"
-    },
-    {
-      "path": "scripts/detect_manager.sh",
-      "accessCount": 8,
-      "lastAccessed": 1775879095400,
+      "accessCount": 18,
+      "lastAccessed": 1775881336778,
       "type": "file"
     },
     {
       "path": "SKILL.md",
+      "accessCount": 15,
+      "lastAccessed": 1775881620893,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 12,
+      "lastAccessed": 1775880883064,
+      "type": "file"
+    },
+    {
+      "path": "tests/verify_environment.bats",
+      "accessCount": 12,
+      "lastAccessed": 1775881075418,
+      "type": "file"
+    },
+    {
+      "path": "scripts/detect_manager.sh",
+      "accessCount": 12,
+      "lastAccessed": 1775881075533,
+      "type": "file"
+    },
+    {
+      "path": "scripts",
+      "accessCount": 7,
+      "lastAccessed": 1775881064282,
+      "type": "directory"
+    },
+    {
+      "path": "scripts/check_status.sh",
       "accessCount": 5,
-      "lastAccessed": 1775878885339,
+      "lastAccessed": 1775881061914,
+      "type": "file"
+    },
+    {
+      "path": "scripts/secret_manager_interface.sh",
+      "accessCount": 5,
+      "lastAccessed": 1775881074464,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/doppler.sh",
+      "accessCount": 5,
+      "lastAccessed": 1775881075479,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/vault.sh",
+      "accessCount": 5,
+      "lastAccessed": 1775881568982,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 4,
+      "lastAccessed": 1775881015018,
+      "type": "file"
+    },
+    {
+      "path": "references/SOP.md",
+      "accessCount": 4,
+      "lastAccessed": 1775881048376,
+      "type": "file"
+    },
+    {
+      "path": "scripts/verify_environment.sh",
+      "accessCount": 4,
+      "lastAccessed": 1775881062990,
+      "type": "file"
+    },
+    {
+      "path": "scripts/emergency_seal.sh",
+      "accessCount": 4,
+      "lastAccessed": 1775881063313,
+      "type": "file"
+    },
+    {
+      "path": "tests/audit_secrets.bats",
+      "accessCount": 4,
+      "lastAccessed": 1775881075235,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/infisical.sh",
+      "accessCount": 4,
+      "lastAccessed": 1775881090034,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/azure_key.sh",
+      "accessCount": 4,
+      "lastAccessed": 1775881090134,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/aws_secrets.sh",
+      "accessCount": 4,
+      "lastAccessed": 1775881090192,
+      "type": "file"
+    },
+    {
+      "path": "scripts/managers/gcp_secret.sh",
+      "accessCount": 4,
+      "lastAccessed": 1775881090359,
+      "type": "file"
+    },
+    {
+      "path": "tests/leak_attempts.bats",
+      "accessCount": 4,
+      "lastAccessed": 1775881114524,
+      "type": "file"
+    },
+    {
+      "path": "tests/check_status.bats",
+      "accessCount": 4,
+      "lastAccessed": 1775881114732,
+      "type": "file"
+    },
+    {
+      "path": "scripts/error_codes.sh",
+      "accessCount": 3,
+      "lastAccessed": 1775881075180,
+      "type": "file"
+    },
+    {
+      "path": "tests/emergency_seal.bats",
+      "accessCount": 3,
+      "lastAccessed": 1775881075597,
+      "type": "file"
+    },
+    {
+      "path": "scripts/tracing.sh",
+      "accessCount": 3,
+      "lastAccessed": 1775881090417,
       "type": "file"
     },
     {
@@ -121,87 +241,21 @@
       "type": "file"
     },
     {
-      "path": "package.json",
-      "accessCount": 2,
-      "lastAccessed": 1775878912072,
-      "type": "file"
-    },
-    {
-      "path": "scripts/emergency_seal.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775878786094,
-      "type": "file"
-    },
-    {
-      "path": "references/SOP.md",
-      "accessCount": 1,
-      "lastAccessed": 1775878786312,
-      "type": "file"
-    },
-    {
-      "path": "scripts/check_status.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775878786352,
-      "type": "file"
-    },
-    {
-      "path": "scripts/secret_manager_interface.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775878911783,
-      "type": "file"
-    },
-    {
       "path": "references/architecture_decisions.md",
-      "accessCount": 1,
-      "lastAccessed": 1775878912004,
-      "type": "file"
-    },
-    {
-      "path": "scripts/managers/doppler.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775878912035,
-      "type": "file"
-    },
-    {
-      "path": "tests/check_status.bats",
-      "accessCount": 1,
-      "lastAccessed": 1775878927079,
+      "accessCount": 2,
+      "lastAccessed": 1775881048594,
       "type": "file"
     },
     {
       "path": "references/security_assessment.md",
-      "accessCount": 1,
-      "lastAccessed": 1775878947341,
+      "accessCount": 2,
+      "lastAccessed": 1775881048672,
       "type": "file"
     },
     {
-      "path": "scripts/managers/vault.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775879050376,
-      "type": "file"
-    },
-    {
-      "path": "scripts/managers/aws_secrets.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775879050717,
-      "type": "file"
-    },
-    {
-      "path": "scripts/managers/gcp_secret.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775879051070,
-      "type": "file"
-    },
-    {
-      "path": "scripts/managers/azure_key.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775879051402,
-      "type": "file"
-    },
-    {
-      "path": "scripts/managers/infisical.sh",
-      "accessCount": 1,
-      "lastAccessed": 1775879051768,
+      "path": "scripts/prep_eval.sh",
+      "accessCount": 2,
+      "lastAccessed": 1775881089805,
       "type": "file"
     },
     {
@@ -211,9 +265,69 @@
       "type": "file"
     },
     {
-      "path": "tests/audit_secrets.bats",
+      "path": "tests",
       "accessCount": 1,
-      "lastAccessed": 1775879183785,
+      "lastAccessed": 1775880015099,
+      "type": "directory"
+    },
+    {
+      "path": "tests/integration/04_hitl_workflow/01_secret_set_command_output.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881026678,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/run_tests.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881027555,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/03_zero_leak_validation/01_no_secret_in_stdout.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881027767,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/04_hitl_workflow/02_audit_logging.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881054778,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/03_zero_leak_validation/02_no_secret_in_history.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881054892,
+      "type": "file"
+    },
+    {
+      "path": "tests/promptfooconfig.yaml",
+      "accessCount": 1,
+      "lastAccessed": 1775881055012,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/05_incident_response/02_leak_detection.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881055066,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/02_secret_injection/02_env_not_written_to_disk.sh",
+      "accessCount": 1,
+      "lastAccessed": 1775881055230,
+      "type": "file"
+    },
+    {
+      "path": ".markdownlint.yaml",
+      "accessCount": 1,
+      "lastAccessed": 1775881075089,
+      "type": "file"
+    },
+    {
+      "path": "tests/promptfooconfig_adversarial.yaml",
+      "accessCount": 1,
+      "lastAccessed": 1775881087337,
       "type": "file"
     }
   ],

@@ -1,0 +1,10 @@
+{
+  "active": true,
+  "started_at": "2026-04-11T04:37:10.049Z",
+  "original_prompt": "/autopilot 扮演资深skill大师和开源项目维护大师,专注秘钥管理领域,将本项目打造成SOTA的LLM-秘钥交互技能. 善用github cli完成milestones & validate CI/CD",
+  "session_id": "e800e8d2-6f83-4960-a677-6e5e60969998",
+  "project_path": "/workspaces/skill-doppler-manager",
+  "reinforcement_count": 0,
+  "awaiting_confirmation": true,
+  "last_checked_at": "2026-04-11T04:37:10.050Z"
+}

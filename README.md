@@ -88,6 +88,7 @@ bash scripts/check_status.sh
 ### 4. Use in AI Agent
 
 The AI agent will automatically:
+
 1. Detect available secret managers
 2. Use the highest-priority configured manager
 3. Inject secrets via `doppler run --` or equivalent
