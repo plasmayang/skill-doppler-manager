@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"/oh-my-claudecode:cancel 2>&1 || /oh-my-claudecode:cancel --force 2>&1\"}",
-  "error": "Exit code 127\n/bin/bash: line 1: /oh-my-claudecode:cancel: No such file or directory\n/bin/bash: line 1: /oh-my-claudecode:cancel: No such file or directory",
-  "timestamp": "2026-04-11T05:19:05.358Z",
-  "retry_count": 1
-}

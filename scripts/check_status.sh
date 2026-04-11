@@ -3,9 +3,15 @@
 # Doppler Manager - Enhanced Status Check
 # Outputs structured JSON for LLM parsing with error codes and recovery hints
 
-# Helper function for JSON output
+# Helper function for JSON output (pure bash, no external dependencies)
 json_escape() {
-    printf '%s' "$1" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || printf '"%s"' "$1"
+    local str="$1"
+    str="${str//\\/\\\\}"   # escape backslashes first
+    str="${str//\"/\\\"}"   # escape quotes
+    str="${str//$'\n'/\\n}" # escape newlines
+    str="${str//$'\t'/\\t}" # escape tabs
+    str="${str//$'\r'/\\r}" # escape carriage returns
+    printf '%s' "\"$str\""
 }
 
 # Define error codes

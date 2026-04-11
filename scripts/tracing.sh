@@ -15,6 +15,7 @@ set -euo pipefail
 # Trace storage (in-memory for current session)
 declare -a TRACES=()
 declare -a SPANS=()
+declare -a SPAN_STACK=()
 
 # Generate a simple trace ID (128-bit hex)
 generate_trace_id() {
